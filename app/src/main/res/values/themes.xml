@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.ComposeEyepetizer" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@mipmap/img_bg_window</item>
+        <!-- 禁用启动时系统窗口预览 -->
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+</resources>

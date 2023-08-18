@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Eyepetizer</string>
+    <string name="splash_slogan_en">Daily appetizersfor your eyes. Bon eyepétit.</string>
+    <string name="splash_slogan_zh_CN">每日精选视频推介，让你大开眼界。</string>
+    <string name="permission_explain">开眼需要存储权限来处理您的图片信息\n开眼视频推荐和观看记录等功能需要访问手机识别码等信息</string>
+    <string name="homepage">首页</string>
+    <string name="community">社区</string>
+    <string name="notification">通知</string>
+    <string name="mine">我的</string>
+    <string name="discovery">发现</string>
+    <string name="commend">推荐</string>
+    <string name="daily">日报</string>
+    <string name="plus_follow">+关注</string>
+    <string name="refresh_commend">刷新推荐</string>
+    <string name="advert">广告</string>
+    <string name="pull_down_to_close_page">下 拉 关 闭 页 面</string>
+    <string name="cache">缓存</string>
+    <string name="collect">收藏</string>
+</resources>
