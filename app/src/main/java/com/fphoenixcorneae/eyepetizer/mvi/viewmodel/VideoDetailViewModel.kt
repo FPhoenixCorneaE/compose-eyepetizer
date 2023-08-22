@@ -40,7 +40,7 @@ class VideoDetailViewModel(
 
     /** 评论列表 */
     val videoComments = Pager(config = PagingConfig(pageSize = EyepetizerApi.PAGE_SIZE)) {
-        VideoCommentsPagingSource()
+        VideoCommentsPagingSource(videoId = videoId)
     }.flow.cachedIn(viewModelScope)
 
     private val _videoDetailUiState = MutableStateFlow(VideoDetailUiState())

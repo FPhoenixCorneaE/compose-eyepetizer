@@ -886,7 +886,7 @@ private fun Banner3(
             contentDescription = null,
             modifier = Modifier
                 .size(size = 40.dp)
-                .border(width = 0.2.dp, color = Gray, shape = CircleShape)
+                .border(width = 1.dp, color = Gray, shape = CircleShape)
                 .constrainAs(avatar) {
                     top.linkTo(image.bottom, margin = 10.dp)
                     start.linkTo(image.start)
@@ -1388,7 +1388,7 @@ private fun FollowCard(
             contentDescription = null,
             modifier = Modifier
                 .size(size = 40.dp)
-                .border(width = 0.2.dp, color = Gray, shape = CircleShape)
+                .border(width = 1.dp, color = Gray, shape = CircleShape)
                 .constrainAs(avatar) {
                     top.linkTo(cover.bottom, margin = 10.dp)
                     start.linkTo(cover.start)
@@ -1401,7 +1401,7 @@ private fun FollowCard(
             contentDescription = null,
             modifier = Modifier
                 .size(size = 10.dp)
-                .border(width = 0.2.dp, color = Gray, shape = CircleShape)
+                .border(width = 1.dp, color = Gray, shape = CircleShape)
                 .background(color = Blue, shape = CircleShape)
                 .constrainAs(avatarStar) {
                     bottom.linkTo(avatar.bottom, margin = 1.dp)
@@ -1702,7 +1702,7 @@ private fun UgcSelectedCardCollection(
             contentDescription = null,
             modifier = Modifier
                 .size(size = 20.dp)
-                .border(width = 0.2.dp, color = White, shape = CircleShape)
+                .border(width = 1.dp, color = White, shape = CircleShape)
                 .constrainAs(avatarLeft) {
                     end.linkTo(nicknameLeft.start, margin = 5.dp)
                     bottom.linkTo(imageLeft.bottom, margin = 4.dp)
@@ -1785,7 +1785,7 @@ private fun UgcSelectedCardCollection(
             contentDescription = null,
             modifier = Modifier
                 .size(size = 20.dp)
-                .border(width = 0.2.dp, color = White, shape = CircleShape)
+                .border(width = 1.dp, color = White, shape = CircleShape)
                 .constrainAs(avatarRightTop) {
                     end.linkTo(nicknameRightTop.start, margin = 5.dp)
                     bottom.linkTo(imageRightTop.bottom, margin = 4.dp)
@@ -1869,7 +1869,7 @@ private fun UgcSelectedCardCollection(
             contentDescription = null,
             modifier = Modifier
                 .size(size = 20.dp)
-                .border(width = 0.2.dp, color = White, shape = CircleShape)
+                .border(width = 1.dp, color = White, shape = CircleShape)
                 .constrainAs(avatarRightBottom) {
                     end.linkTo(nicknameRightBottom.start, margin = 5.dp)
                     bottom.linkTo(imageRightBottom.bottom, margin = 4.dp)
@@ -2020,7 +2020,7 @@ private fun AutoPlayVideoAd(
             contentDescription = null,
             modifier = Modifier
                 .size(size = 40.dp)
-                .border(width = 0.2.dp, color = Gray, shape = CircleShape)
+                .border(width = 1.dp, color = Gray, shape = CircleShape)
                 .constrainAs(avatar) {
                     top.linkTo(video.bottom, margin = 10.dp)
                     start.linkTo(video.start)

@@ -16,4 +16,8 @@
     <string name="pull_down_to_close_page">下 拉 关 闭 页 面</string>
     <string name="cache">缓存</string>
     <string name="collect">收藏</string>
+    <string name="send_comment_hint">点 击 发 表 你 的 评 论</string>
+    <string name="comment_reply_user_format">回复 @%1$s</string>
+    <string name="view_conversation">查看对话</string>
+    <string name="reply">回复</string>
 </resources>

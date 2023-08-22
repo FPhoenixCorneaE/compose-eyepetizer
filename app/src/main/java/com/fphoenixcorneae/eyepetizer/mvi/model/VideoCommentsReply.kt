@@ -12,7 +12,7 @@ data class VideoCommentsReply(
     val count: Int = 0, // 6
     val itemList: List<Item>? = null,
     val nextPageUrl: String? = null, // null
-    val total: Int = 0 // 5
+    val total: Int = 0, // 5
 ) {
     @Keep
     data class Item(
@@ -21,11 +21,11 @@ data class VideoCommentsReply(
         val id: Int = 0, // 0
         val tag: Any? = null, // null
         val trackingData: Any? = null, // null
-        val type: String? = null // textCard
+        val type: String? = null, // textCard
     ) {
         @Keep
         data class Data(
-            val actionUrl: Any? = null, // null
+            val actionUrl: String? = null, // null
             val adTrack: Any? = null, // null
             val cover: Any? = null, // null
             val createTime: Long = 0, // 1690767718000
@@ -37,7 +37,7 @@ data class VideoCommentsReply(
             val likeCount: Int = 0, // 0
             val liked: Boolean = false, // false
             val message: String? = null, // 太酷了
-            val parentReply: Any? = null, // null
+            val parentReply: ParentReply? = null, // null
             val parentReplyId: Int = 0, // 0
             val recommendLevel: String? = null, // not_recommend
             val replyStatus: String? = null, // PUBLISHED
@@ -55,8 +55,17 @@ data class VideoCommentsReply(
             val userBlocked: Boolean = false, // false
             val userType: Any? = null, // null
             val videoId: Int = 0, // 319157
-            val videoTitle: String? = null // 抓拍冲浪瞬间：我与大海的浪漫约定
+            val videoTitle: String? = null, // 抓拍冲浪瞬间：我与大海的浪漫约定
         ) {
+            @Keep
+            data class ParentReply(
+                val id: Long = 0,
+                val imageUrl: Any? = null,
+                val message: String? = null,
+                val replyStatus: String? = null,
+                val user: User? = null,
+            )
+
             @Keep
             data class User(
                 val actionUrl: String? = null, // eyepetizer://pgc/detail/302647283/?title=%E5%B9%BB%E6%83%B3%E9%87%8C&userType=NORMAL&tabIndex=0
@@ -79,7 +88,7 @@ data class VideoCommentsReply(
                 val releaseDate: Long = 0, // 1639135667000
                 val uid: Int = 0, // 302647283
                 val university: Any? = null, // null
-                val userType: String? = null // NORMAL
+                val userType: String? = null, // NORMAL
             )
         }
     }
