@@ -12,6 +12,8 @@ import com.fphoenixcorneae.eyepetizer.const.Constant
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.MainScreen
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.SplashScreen
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.detail.VideoDetailScreen
+import com.fphoenixcorneae.eyepetizer.mvi.ui.page.login.LoginScreen
+import com.fphoenixcorneae.eyepetizer.mvi.ui.page.web.WebScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import kotlin.math.roundToInt
@@ -28,17 +30,28 @@ fun EyepetizerScreen() {
             route = NavRoute.SPLASH,
             enterTransition = { fadeIn() },
             exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() },
         ) {
             SplashScreen()
         }
         composable(
             route = NavRoute.MAIN,
-            enterTransition = { fadeIn() },
-            exitTransition = { fadeOut() },
-            popEnterTransition = { fadeIn() },
-            popExitTransition = { fadeOut() },
+            enterTransition = { slideInVertically(initialOffsetY = { (it * 0.2f).roundToInt() }) + fadeIn() },
+            exitTransition = { slideOutVertically(targetOffsetY = { (it * 0.2f).roundToInt() }) + fadeOut() },
+            popEnterTransition = { slideInVertically(initialOffsetY = { (it * 0.2f).roundToInt() }) + fadeIn() },
+            popExitTransition = { slideOutVertically(targetOffsetY = { (it * 0.2f).roundToInt() }) + fadeOut() },
         ) {
             MainScreen()
+        }
+        composable(
+            route = NavRoute.LOGIN,
+            enterTransition = { slideInVertically(initialOffsetY = { (it * 0.2f).roundToInt() }) + fadeIn() },
+            exitTransition = { slideOutVertically(targetOffsetY = { (it * 0.2f).roundToInt() }) + fadeOut() },
+            popEnterTransition = { slideInVertically(initialOffsetY = { (it * 0.2f).roundToInt() }) + fadeIn() },
+            popExitTransition = { slideOutVertically(targetOffsetY = { (it * 0.2f).roundToInt() }) + fadeOut() },
+        ) {
+            LoginScreen()
         }
         composable(
             route = "${NavRoute.VIDEO_DETAIL}/{${Constant.Key.VIDEO_ID}}",
@@ -53,6 +66,19 @@ fun EyepetizerScreen() {
         ) { backStackEntry ->
             VideoDetailScreen(
                 videoId = backStackEntry.arguments?.getString(Constant.Key.VIDEO_ID).orEmpty(),
+            )
+        }
+        composable(
+            route = "${NavRoute.WEB}?${Constant.Key.WEB_URL}={${Constant.Key.WEB_URL}}",
+            arguments = listOf(navArgument(Constant.Key.WEB_URL) { type = NavType.StringType }),
+            enterTransition = { slideInVertically(initialOffsetY = { (it * 0.2f).roundToInt() }) + fadeIn() },
+            exitTransition = { slideOutVertically(targetOffsetY = { (it * 0.2f).roundToInt() }) + fadeOut() },
+            popEnterTransition = { slideInVertically(initialOffsetY = { (it * 0.2f).roundToInt() }) + fadeIn() },
+            popExitTransition = { slideOutVertically(targetOffsetY = { (it * 0.2f).roundToInt() }) + fadeOut() },
+        ) { backStackEntry ->
+            WebScreen(
+                url = backStackEntry.arguments?.getString(Constant.Key.WEB_URL)
+                    .orEmpty(),
             )
         }
     }

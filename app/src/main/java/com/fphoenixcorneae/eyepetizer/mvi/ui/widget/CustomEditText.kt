@@ -49,6 +49,7 @@ fun CustomEditText(
     modifier: Modifier = Modifier,
     text: String,
     onValueChange: (String) -> Unit,
+    onFocusChanged: (Boolean) -> Unit = {},
     backgroundColor: Color = White,
     corners: Dp = 2.dp,
     borderStroke: BorderStroke = BorderStroke(width = 1.dp, color = Transparent),
@@ -57,8 +58,10 @@ fun CustomEditText(
     hintColor: Color = Gray,
     @DrawableRes startIcon: Int = -1,
     @DrawableRes startCheckedIcon: Int = -1,
+    startIconSize: Dp = 12.dp,
     iconSpacing: Dp = 4.dp,
     @DrawableRes endIcon: Int = -1,
+    endIconSize: Dp = 12.dp,
     onEndIconClick: () -> Unit = {},
     enabled: Boolean = true,
     readOnly: Boolean = false,
@@ -79,6 +82,7 @@ fun CustomEditText(
                 .fillMaxSize()
                 .onFocusChanged {
                     hasFocus = it.isFocused
+                    onFocusChanged(it.isFocused)
                 },
             singleLine = true,
             enabled = enabled,
@@ -101,14 +105,14 @@ fun CustomEditText(
                         Image(
                             painter = painterResource(id = startIcon),
                             contentDescription = null,
-                            modifier = Modifier.size(12.dp)
+                            modifier = Modifier.size(size = startIconSize)
                         )
                         Spacer(modifier = Modifier.width(iconSpacing))
                     } else if (hasFocus && startCheckedIcon != -1) {
                         Image(
                             painter = painterResource(id = startCheckedIcon),
                             contentDescription = null,
-                            modifier = Modifier.size(12.dp)
+                            modifier = Modifier.size(size = startIconSize)
                         )
                         Spacer(modifier = Modifier.width(iconSpacing))
                     }
@@ -132,7 +136,7 @@ fun CustomEditText(
                             painter = painterResource(id = endIcon),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(12.dp)
+                                .size(size = endIconSize)
                                 .padding(2.dp)
                                 .clickableNoRipple {
                                     onEndIconClick()

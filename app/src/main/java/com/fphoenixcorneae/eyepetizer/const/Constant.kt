@@ -12,6 +12,7 @@ object Constant {
      */
     object Key {
         const val VIDEO_ID = "video_id"
+        const val WEB_URL = "web_url"
     }
 
     /**
@@ -43,5 +44,19 @@ object Constant {
         const val COMMEND = "commend"
         const val DAILY = "daily"
         const val VIDEO_DETAIL = "video_detail"
+    }
+
+    /**
+     * @desc：
+     * @date：2023/08/23 11:27
+     */
+    object Url {
+        const val AUTHOR_LOGIN = "http://open.eyepetizer.net/#!/login"
+        const val AUTHOR_OPEN = "http://open.eyepetizer.net/#!/landing"
+        const val FORGET_PASSWORD = "http://open.eyepetizer.net/#!/forget"
+        const val LEGAL_NOTICES = "http://www.kaiyanapp.com/legal_notices.html"
+        const val USER_REGISTER = "http://open.eyepetizer.net/#!/register"
+        const val USER_SERVICE_AGREEMENT = "http://www.eyepetizer.net/agreement.html"
+        const val VIDEO_FUNCTION_STATEMENT = "http://www.eyepetizer.net/right.html"
     }
 }

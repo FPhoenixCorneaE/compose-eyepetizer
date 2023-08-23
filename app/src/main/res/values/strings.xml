@@ -20,4 +20,14 @@
     <string name="comment_reply_user_format">回复 @%1$s</string>
     <string name="view_conversation">查看对话</string>
     <string name="reply">回复</string>
+    <string name="login_prompt">登录后即可关注作者、\n发表评论、同步收藏视频和播放记录</string>
+    <string name="login_account_hint">请输入手机号/邮箱地址</string>
+    <string name="login_password_hint">请输入密码</string>
+    <string name="login">登录</string>
+    <string name="user_register">用户注册</string>
+    <string name="author_login">作者登录</string>
+    <string name="login_or_register_agree">登录或注册即同意开眼\u3000</string>
+    <string name="user_service_agreement">用户服务协议</string>
+    <string name="coming_soon">该功能即将开放，敬请期待</string>
+    <string name="forget_password">找回密码</string>
 </resources>
