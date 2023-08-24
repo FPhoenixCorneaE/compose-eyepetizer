@@ -32,4 +32,6 @@
     <string name="forget_password">找回密码</string>
     <string name="follow">关注</string>
     <string name="choiceness">精选</string>
+    <string name="follow_login_prompt">点击登录后可关注主题和作者</string>
+    <string name="release">发布：</string>
 </resources>

@@ -1,7 +1,10 @@
 package com.fphoenixcorneae.eyepetizer.mvi.model
 
 
+import android.os.Parcelable
 import androidx.annotation.Keep
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 /**
  * @desc：
@@ -49,6 +52,7 @@ data class CommunityReply(
                 @Keep
                 data class Data(
                     val addWatermark: Boolean = false, // true
+                    val author: Author? = null,
                     val area: String? = null, // 成都市
                     val checkStatus: String? = null, // CHECKED
                     val city: String? = null, // 成都市
@@ -90,6 +94,39 @@ data class CommunityReply(
                     val validateTaskId: String? = null, // vi7TDqQqeQ4YZ4Eh9gipw9so-1wL7Mj
                     val width: Int = 0, // 1920
                 ) {
+                    @Keep
+                    data class Author(
+                        val adTrack: @RawValue Any? = null,
+                        val approvedNotReadyVideoCount: Int = 0,
+                        val description: String? = null,
+                        val expert: Boolean = false,
+                        val follow: Follow? = null,
+                        val icon: String? = null,
+                        val id: Int = 0,
+                        val ifPgc: Boolean = false,
+                        val latestReleaseTime: Long = 0,
+                        val link: String? = null,
+                        val name: String? = null,
+                        val recSort: Int = 0,
+                        val shield: Shield? = null,
+                        val videoNum: Int = 0,
+                    ) {
+
+                        @Keep
+                        data class Follow(
+                            val followed: Boolean = false,
+                            val itemId: Int = 0,
+                            val itemType: String? = null,
+                        )
+
+                        @Keep
+                        data class Shield(
+                            val itemId: Int = 0,
+                            val itemType: String? = null,
+                            val shielded: Boolean = false,
+                        )
+                    }
+
                     @Keep
                     data class Consumption(
                         val collectionCount: Int = 0, // 63

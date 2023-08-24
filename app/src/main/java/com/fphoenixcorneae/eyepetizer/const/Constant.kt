@@ -44,6 +44,7 @@ object Constant {
         const val COMMEND = "commend"
         const val DAILY = "daily"
         const val VIDEO_DETAIL = "video_detail"
+        const val FOLLOW = "follow"
     }
 
     /**

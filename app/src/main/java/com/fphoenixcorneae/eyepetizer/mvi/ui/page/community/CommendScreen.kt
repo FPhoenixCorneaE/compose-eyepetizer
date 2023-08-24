@@ -80,6 +80,7 @@ fun CommendScreen() {
     val communityCommends = viewModel.communityCommends.collectAsLazyPagingItems()
     SwipeRefreshStaggeredGrid(
         lazyPagingItems = communityCommends,
+        modifier = Modifier.fillMaxSize(),
         horizontalItemSpacing = 6.dp,
         verticalItemSpacing = 14.dp,
         contentPadding = PaddingValues(all = 14.dp),
@@ -95,7 +96,7 @@ fun CommendScreen() {
             },
         ) {
             val item = communityCommends[it] ?: return@items
-            CommunityCommendItem(item)
+            CommunityCommendItem(item = item)
         }
     }
 }

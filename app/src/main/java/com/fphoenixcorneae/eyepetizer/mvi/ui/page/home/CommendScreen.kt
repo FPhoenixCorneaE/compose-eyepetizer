@@ -26,13 +26,16 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -64,6 +67,7 @@ import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.fphoenixcorneae.eyepetizer.R
 import com.fphoenixcorneae.eyepetizer.const.Constant
+import com.fphoenixcorneae.eyepetizer.ext.DisposableLifecycleEffect
 import com.fphoenixcorneae.eyepetizer.ext.clickableNoRipple
 import com.fphoenixcorneae.eyepetizer.ext.toVideoDuration
 import com.fphoenixcorneae.eyepetizer.mvi.model.HomepageReply
@@ -93,16 +97,33 @@ import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack
 fun CommendScreen() {
     val viewModel = viewModel<HomepageViewModel>()
     val homepageCommends = viewModel.homepageCommends.collectAsLazyPagingItems()
+    val lazyListState = rememberLazyListState()
+    val firstVisibleItemIndex by remember { derivedStateOf { lazyListState.firstVisibleItemIndex } }
     SwipeRefresh(lazyPagingItems = homepageCommends) {
         items(homepageCommends.itemCount) {
             val item = homepageCommends[it] ?: return@items
-            HomepageItem(item = item, position = it, playTag = Constant.PlayTag.COMMEND)
+            HomepageItem(
+                item = item,
+                position = it,
+                playTag = Constant.PlayTag.COMMEND,
+                isFocused = it == firstVisibleItemIndex,
+            )
         }
     }
+    DisposableLifecycleEffect(
+        onStop = {
+            GSYVideoManager.releaseAllVideos()
+        },
+    )
 }
 
 @Composable
-fun HomepageItem(item: HomepageReply.Item, position: Int, playTag: String) {
+fun HomepageItem(
+    item: HomepageReply.Item,
+    position: Int,
+    playTag: String,
+    isFocused: Boolean = false,
+) {
     when (item.type) {
         "textCard" -> when (item.data?.type) {
             "header5" -> TextCardHeader5(item = item)
@@ -142,6 +163,7 @@ fun HomepageItem(item: HomepageReply.Item, position: Int, playTag: String) {
             item = item,
             position = position,
             playTag = playTag,
+            isFocused = isFocused,
         )
 
         else -> {}
@@ -1909,6 +1931,7 @@ private fun AutoPlayVideoAd(
     ),
     position: Int = 0,
     playTag: String = "",
+    isFocused: Boolean = false,
 ) {
     val context = LocalContext.current
     val density = LocalDensity.current
@@ -1919,66 +1942,64 @@ private fun AutoPlayVideoAd(
     ) {
         val (video, label, avatar, title, description, divider) = createRefs()
         // 视频
-        DisposableEffect(
-            key1 = Card(
+        Card(
+            modifier = Modifier
+                .height(185.dp)
+                .constrainAs(video) {
+                    top.linkTo(parent.top, margin = 8.dp)
+                    start.linkTo(parent.start, margin = 14.dp)
+                    end.linkTo(parent.end, margin = 14.dp)
+                    width = Dimension.fillToConstraints
+                },
+            shape = RoundedCornerShape(size = 4.dp)
+        ) {
+            AndroidView(
+                factory = {
+                    AutoPlayVideoPlayer(it)
+                },
                 modifier = Modifier
-                    .height(185.dp)
-                    .constrainAs(video) {
-                        top.linkTo(parent.top, margin = 8.dp)
-                        start.linkTo(parent.start, margin = 14.dp)
-                        end.linkTo(parent.end, margin = 14.dp)
-                        width = Dimension.fillToConstraints
-                    },
-                shape = RoundedCornerShape(size = 4.dp)
+                    .fillMaxSize(),
             ) {
-                AndroidView(
-                    factory = {
-                        AutoPlayVideoPlayer(it)
-                    },
-                    modifier = Modifier
-                        .fillMaxSize(),
-                ) {
-                    it.run {
-                        // 防止错位设置
-                        setPlayTag(playTag)
-                        // 设置播放位置防止错位
-                        playPosition = position
-                        // 音频焦点冲突时是否释放
-                        isReleaseWhenLossAudio = false
-                        // 设置循环播放
-                        isLooping = true
-                        // 增加封面
-                        thumbImageView = ImageView(context).apply {
-                            scaleType = ImageView.ScaleType.CENTER_CROP
-                            load(data = item.data?.detail?.imageUrl) {
-                                transformations(RoundedCornersTransformation(density.run { 4.dp.toPx() }))
-                                placeholder(GradientDrawable().apply {
-                                    setColor(Gray20.toArgb())
-                                    cornerRadius = density.run { 4.dp.toPx() }
-                                })
-                                crossfade(true)
-                            }
-                            parent?.run { removeView(this@apply) }
+                it.run {
+                    // 防止错位设置
+                    setPlayTag(playTag)
+                    // 设置播放位置防止错位
+                    playPosition = position
+                    // 音频焦点冲突时是否释放
+                    isReleaseWhenLossAudio = false
+                    // 设置循环播放
+                    isLooping = true
+                    // 增加封面
+                    thumbImageView = ImageView(context).apply {
+                        scaleType = ImageView.ScaleType.CENTER_CROP
+                        load(data = item.data?.detail?.imageUrl) {
+                            transformations(RoundedCornersTransformation(density.run { 4.dp.toPx() }))
+                            placeholder(GradientDrawable().apply {
+                                setColor(Gray20.toArgb())
+                                cornerRadius = density.run { 4.dp.toPx() }
+                            })
+                            crossfade(true)
                         }
-                        // 设置播放过程中的回调
-                        setVideoAllCallBack(object : GSYSampleCallBack() {
-                            override fun onPrepared(url: String?, vararg objects: Any?) {
-                                super.onPrepared(url, *objects)
-                                GSYVideoManager.instance().isNeedMute = true
-                            }
+                        parent?.run { removeView(this@apply) }
+                    }
+                    // 设置播放过程中的回调
+                    setVideoAllCallBack(object : GSYSampleCallBack() {
+                        override fun onPrepared(url: String?, vararg objects: Any?) {
+                            super.onPrepared(url, *objects)
+                            GSYVideoManager.instance().isNeedMute = true
+                        }
 
-                            override fun onClickBlank(url: String?, vararg objects: Any?) {
-                                super.onClickBlank(url, *objects)
-                            }
-                        })
-                        // 设置播放URL
-                        setUp(item.data?.detail?.url, false, null)
+                        override fun onClickBlank(url: String?, vararg objects: Any?) {
+                            super.onClickBlank(url, *objects)
+                        }
+                    })
+                    // 设置播放URL
+                    setUp(item.data?.detail?.url, false, null)
+                    if (isFocused) {
+                        // 完全可见时自动播放
+                        startPlayLogic()
                     }
                 }
-            },
-        ) {
-            onDispose {
-                GSYVideoManager.releaseAllVideos()
             }
         }
         // 标签

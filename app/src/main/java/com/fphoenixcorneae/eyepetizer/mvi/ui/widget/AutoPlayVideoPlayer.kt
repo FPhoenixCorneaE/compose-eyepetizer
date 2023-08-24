@@ -58,7 +58,6 @@ class AutoPlayVideoPlayer : StandardGSYVideoPlayer {
     }
 
     override fun touchDoubleUp(e: MotionEvent?) {
-        super.touchDoubleUp(e)
         // 不需要双击暂停
     }
 
@@ -84,7 +83,7 @@ class AutoPlayVideoPlayer : StandardGSYVideoPlayer {
     override fun changeUiToPlayingShow() {
         super.changeUiToPlayingShow()
         mBottomContainer.gone()
-        start?.gone()
+        start.gone()
     }
 
     /**
