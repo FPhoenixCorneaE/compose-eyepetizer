@@ -1,11 +1,14 @@
 package com.fphoenixcorneae.eyepetizer.mvi.ui.widget
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults.elevation
 import androidx.compose.material.ButtonDefaults.textButtonColors
@@ -22,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.res.ResourcesCompat
@@ -33,17 +37,20 @@ import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Black70
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Gray30
 
 /**
- * 下拉加载封装
+ * 瀑布流下拉加载封装
  * implementation "com.google.accompanist:accompanist-swiperefresh:xxx"
  */
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun <T : Any> SwipeRefresh(
+fun <T : Any> SwipeRefreshStaggeredGrid(
     lazyPagingItems: LazyPagingItems<T>,
     modifier: Modifier = Modifier,
-    lazyListState: LazyListState = rememberLazyListState(),
+    lazyListState: LazyStaggeredGridState = rememberLazyStaggeredGridState(),
+    columnsCount: Int = 2,
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    content: LazyListScope.() -> Unit,
+    verticalItemSpacing: Dp = 8.dp,
+    horizontalItemSpacing: Dp = 8.dp,
+    content: LazyStaggeredGridScope.() -> Unit,
 ) {
     val pullRefreshState = rememberPullRefreshState(
         refreshing = lazyPagingItems.loadState.refresh is LoadState.Loading,
@@ -58,7 +65,10 @@ fun <T : Any> SwipeRefresh(
             lazyPagingItems = lazyPagingItems,
             lazyListState = lazyListState,
             contentPadding = contentPadding,
-            content = content
+            columnsCount = columnsCount,
+            verticalItemSpacing = verticalItemSpacing,
+            horizontalItemSpacing = horizontalItemSpacing,
+            content = content,
         )
         PullRefreshIndicator(
             refreshing = lazyPagingItems.loadState.refresh is LoadState.Loading,
@@ -68,17 +78,23 @@ fun <T : Any> SwipeRefresh(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun <T : Any> PagingLazyColumn(
     lazyPagingItems: LazyPagingItems<T>,
-    lazyListState: LazyListState = rememberLazyListState(),
+    lazyListState: LazyStaggeredGridState = rememberLazyStaggeredGridState(),
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    content: LazyListScope.() -> Unit,
+    columnsCount: Int = 2,
+    verticalItemSpacing: Dp = 8.dp,
+    horizontalItemSpacing: Dp = 8.dp,
+    content: LazyStaggeredGridScope.() -> Unit,
 ) {
-    LazyColumn(
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Fixed(count = columnsCount),
         state = lazyListState,
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
+        verticalItemSpacing = verticalItemSpacing,
+        horizontalArrangement = Arrangement.spacedBy(space = horizontalItemSpacing),
         contentPadding = contentPadding,
     ) {
         content()
@@ -86,17 +102,18 @@ private fun <T : Any> PagingLazyColumn(
     }
 }
 
-fun <T : Any> LazyListScope.lazyColumnFooter(lazyPagingItems: LazyPagingItems<T>) {
+@OptIn(ExperimentalFoundationApi::class)
+fun <T : Any> LazyStaggeredGridScope.lazyColumnFooter(lazyPagingItems: LazyPagingItems<T>) {
     lazyPagingItems.apply {
         when {
             loadState.append is LoadState.Loading -> {
                 // 加载更多，底部loading
-                item { LoadingItem() }
+                item(span = StaggeredGridItemSpan.FullLine) { LoadingItem() }
             }
 
             loadState.append is LoadState.Error -> {
                 // 加载更多异常
-                item {
+                item(span = StaggeredGridItemSpan.FullLine) {
                     ErrorMoreRetryItem {
                         lazyPagingItems.retry()
                     }
@@ -105,19 +122,19 @@ fun <T : Any> LazyListScope.lazyColumnFooter(lazyPagingItems: LazyPagingItems<T>
 
             loadState.append == LoadState.NotLoading(endOfPaginationReached = true) -> {
                 // 没有更多数据了
-                item { NoMoreDataItem() }
+                item(span = StaggeredGridItemSpan.FullLine) { NoMoreDataItem() }
             }
 
             loadState.refresh is LoadState.Error -> {
                 if (lazyPagingItems.itemCount <= 0) {
                     // 刷新的时候，如果itemCount小于0，第一次加载异常
-                    item {
+                    item(span = StaggeredGridItemSpan.FullLine) {
                         ErrorContent {
                             lazyPagingItems.retry()
                         }
                     }
                 } else {
-                    item {
+                    item(span = StaggeredGridItemSpan.FullLine) {
                         ErrorMoreRetryItem {
                             lazyPagingItems.retry()
                         }

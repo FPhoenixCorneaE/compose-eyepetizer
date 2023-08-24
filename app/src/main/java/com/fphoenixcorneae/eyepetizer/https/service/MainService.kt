@@ -1,5 +1,6 @@
 package com.fphoenixcorneae.eyepetizer.https.service
 
+import com.fphoenixcorneae.eyepetizer.mvi.model.CommunityReply
 import com.fphoenixcorneae.eyepetizer.mvi.model.HomepageReply
 import retrofit2.http.GET
 import retrofit2.http.Url
@@ -15,4 +16,10 @@ interface MainService {
      */
     @GET
     suspend fun getHomepageData(@Url url: String): HomepageReply?
+
+    /**
+     * 社区-推荐/关注列表
+     */
+    @GET
+    suspend fun getCommunityData(@Url url: String): CommunityReply?
 }

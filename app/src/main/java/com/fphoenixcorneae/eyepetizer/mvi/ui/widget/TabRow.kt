@@ -39,6 +39,22 @@ import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.LocalThemeColors
 /**
  * @desc：选项卡
  * @date：2023/08/09 16:14
+ * @param selectedTabIndex     默认选项下标
+ * @param tabs                 选项内容
+ * @param modifier             布局修饰符
+ * @param containerColor       背景色
+ * @param contentColor         选项内容颜色
+ * @param selectedContentColor 选中选项内容颜色
+ * @param fontSize             内容文字大小
+ * @param fontFamily           内容文字字体
+ * @param isFixTabWidth        选项宽度是否固定，默认为true
+ * @param tabWidth             选项宽度
+ * @param indicatorWidth       指示器宽度
+ * @param indicatorHeight      指示器高度
+ * @param indicatorRadius      指示器圆角
+ * @param bottomSpace          底部内边距
+ * @param dividerColor         分割线颜色
+ * @param onTabClick           选项点击事件
  */
 @Composable
 fun TabRow(

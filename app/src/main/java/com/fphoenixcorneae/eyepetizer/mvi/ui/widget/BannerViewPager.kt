@@ -40,6 +40,7 @@ import kotlin.concurrent.fixedRateTimer
  * @param activeColor          选中的指示器样式
  * @param inactiveColor        未选中的指示器样式
  * @param canLoop              是否自动播放轮播图
+ * @param isInfinite           是否无限
  * @param loopDelay            任务执行前的延迟（毫秒）
  * @param loopPeriod           连续任务执行之间的时间（毫秒）。
  * @param contentPadding       整个内容周围的填充。这将在内容被剪切后为其添加填充，这是不可能通过modifier参数实现的。
@@ -59,6 +60,7 @@ fun <T> BannerViewPager(
     activeColor: Color = Color.White,
     inactiveColor: Color = Color(0xFF999999),
     canLoop: Boolean = true,
+    isInfinite: Boolean = true,
     loopDelay: Long = 3000,
     loopPeriod: Long = 3000,
     contentPadding: PaddingValues = PaddingValues(horizontal = 14.dp),
@@ -66,10 +68,10 @@ fun <T> BannerViewPager(
     onItemClick: ((Int) -> Unit) = {},
     content: @Composable BoxScope.(item: T?) -> Unit = {},
 ) {
-    val virtualCount = Int.MAX_VALUE
     val actualCount = data?.size ?: 0
+    val virtualCount = if (isInfinite) Int.MAX_VALUE else actualCount
     // 初始图片下标
-    val initialIndex = virtualCount / 2
+    val initialIndex = if (isInfinite) virtualCount / 2 else 0
     val pageState = rememberPagerState(initialPage = initialIndex)
     if (canLoop) {
         val coroutineScope = rememberCoroutineScope()

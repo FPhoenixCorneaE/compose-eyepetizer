@@ -30,4 +30,6 @@
     <string name="user_service_agreement">用户服务协议</string>
     <string name="coming_soon">该功能即将开放，敬请期待</string>
     <string name="forget_password">找回密码</string>
+    <string name="follow">关注</string>
+    <string name="choiceness">精选</string>
 </resources>

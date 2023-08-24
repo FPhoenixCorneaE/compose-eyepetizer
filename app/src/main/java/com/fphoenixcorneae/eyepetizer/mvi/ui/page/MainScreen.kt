@@ -24,7 +24,7 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 /**
- * @desc：
+ * @desc：主页
  * @date：2023/08/09 13:39
  */
 @OptIn(ExperimentalAnimationApi::class)

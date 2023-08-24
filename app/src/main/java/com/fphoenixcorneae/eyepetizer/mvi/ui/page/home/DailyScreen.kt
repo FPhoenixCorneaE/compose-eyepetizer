@@ -8,7 +8,7 @@ import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.SwipeRefresh
 import com.fphoenixcorneae.eyepetizer.mvi.viewmodel.HomepageViewModel
 
 /**
- * @desc：
+ * @desc：首页-日报
  * @date：2023/08/11 16:52
  */
 @Composable
