@@ -1,6 +1,8 @@
 package com.fphoenixcorneae.eyepetizer.mvi.ui.nav
 
 import androidx.navigation.NavHostController
+import androidx.navigation.navOptions
+import com.fphoenixcorneae.eyepetizer.const.Constant
 
 /**
  * @desc：
@@ -14,4 +16,25 @@ object NavHostController {
     }
 
     fun get() = navHostController.get()!!
+
+    fun navToMain() {
+        get().navigate(NavRoute.MAIN)
+    }
+
+    fun navToLogin() {
+        get().navigate(NavRoute.LOGIN)
+    }
+
+    fun navToVideoDetail(videoId: String?) {
+        get().navigate(
+            route = "${NavRoute.VIDEO_DETAIL}/${videoId}",
+            navOptions = navOptions {
+                launchSingleTop = true
+            },
+        )
+    }
+
+    fun navToWeb(url: String?) {
+        get().navigate("${NavRoute.WEB}?${Constant.Key.WEB_URL}=${url}")
+    }
 }

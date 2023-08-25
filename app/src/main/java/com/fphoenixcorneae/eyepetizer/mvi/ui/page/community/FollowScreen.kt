@@ -118,9 +118,7 @@ fun CommunityFollowHeader() {
             .fillMaxWidth()
             .wrapContentHeight()
             .clickableNoRipple {
-                NavHostController
-                    .get()
-                    .navigate(NavRoute.LOGIN)
+                NavHostController.navToLogin()
             },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -197,7 +195,7 @@ fun AutoPlayFollowCard(
             .fillMaxWidth()
             .wrapContentHeight()
             .clickableNoRipple {
-
+                NavHostController.navToVideoDetail(videoId = item.data?.content?.data?.id?.toString())
             },
     ) {
         val (avatar, avatarStar, nickname, releaseTime, title, description, video, duration, consumption, divider) = createRefs()

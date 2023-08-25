@@ -83,7 +83,7 @@ fun MainScreen() {
                 1 -> animatedNavController.navigate(NavRoute.Main.COMMUNITY)
                 3 -> animatedNavController.navigate(NavRoute.Main.NOTIFICATION)
                 4 -> animatedNavController.navigate(NavRoute.Main.MINE)
-                else -> NavHostController.get().navigate(NavRoute.LOGIN)
+                else -> NavHostController.navToLogin()
             }
         }
     }

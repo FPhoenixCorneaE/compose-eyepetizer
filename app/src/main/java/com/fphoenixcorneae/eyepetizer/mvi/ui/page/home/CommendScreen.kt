@@ -986,14 +986,7 @@ private fun VideoSmallCard(
             .fillMaxWidth()
             .wrapContentHeight()
             .clickableNoRipple {
-                NavHostController
-                    .get()
-                    .navigate(
-                        route = "${NavRoute.VIDEO_DETAIL}/${item.data?.id}",
-                        navOptions = navOptions {
-                            launchSingleTop = true
-                        },
-                    )
+                NavHostController.navToVideoDetail(videoId = item.data?.id?.toString())
             },
     ) {
         val (cover, duration, title, description, share) = createRefs()
@@ -1300,14 +1293,7 @@ private fun FollowCard(
             .fillMaxWidth()
             .wrapContentHeight()
             .clickableNoRipple {
-                NavHostController
-                    .get()
-                    .navigate(
-                        route = "${NavRoute.VIDEO_DETAIL}/${item.data?.content?.data?.id}",
-                        navOptions = navOptions {
-                            launchSingleTop = true
-                        },
-                    )
+                NavHostController.navToVideoDetail(videoId = item.data?.content?.data?.id?.toString())
             },
     ) {
         val (cover, choiceness, advert, duration, avatar, avatarStar, title, description, share, divider) = createRefs()

@@ -66,7 +66,7 @@ fun SplashScreen() {
             // 动画结束
             delay(1500)
             // 跳转首页
-            NavHostController.get().navigate(NavRoute.MAIN)
+            NavHostController.navToMain()
         }
     }
     SystemUiScaffold(statusBarsPadding = false, isDarkFont = false) {

@@ -62,9 +62,7 @@ fun MineScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickableNoRipple {
-                        NavHostController
-                            .get()
-                            .navigate(NavRoute.LOGIN)
+                        NavHostController.navToLogin()
                     },
             ) {
                 // 头像

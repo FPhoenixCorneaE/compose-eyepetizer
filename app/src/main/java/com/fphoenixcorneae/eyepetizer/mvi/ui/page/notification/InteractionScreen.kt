@@ -89,7 +89,7 @@ fun NotificationLoginGuide() {
         // 登录
         Button(
             onClick = {
-                NavHostController.get().navigate(NavRoute.LOGIN)
+                NavHostController.navToLogin()
             },
             modifier = Modifier
                 .padding(top = 60.dp)

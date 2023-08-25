@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -76,6 +77,7 @@ import com.fphoenixcorneae.eyepetizer.ext.toReplyTimeString
 import com.fphoenixcorneae.eyepetizer.mvi.model.VideoCommentsReply
 import com.fphoenixcorneae.eyepetizer.mvi.model.VideoDetailReply
 import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavHostController
+import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavRoute
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.home.HomepageItem
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Black
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Black45
@@ -139,6 +141,7 @@ fun VideoDetailScreen(
     var visibleBack by remember { mutableStateOf(false) }
     var visibleCollect by remember { mutableStateOf(false) }
     var visibleShare by remember { mutableStateOf(false) }
+    val relatedAndCommentsLazyListState = rememberLazyListState()
     LaunchedEffect(key1 = videoId) {
         // singleTop模式，需要手动刷新Ui
         viewModel.updateVideoId(videoId)
@@ -344,7 +347,7 @@ fun VideoDetailScreen(
                     delay(1000)
                     showAnimated = false
                 }
-                LazyColumn {
+                LazyColumn(state = relatedAndCommentsLazyListState) {
                     item {
                         VideoInfo(videoDetailReply = videoDetailUiState.videoDetailReply, showAnimated = showAnimated)
                     }
@@ -367,7 +370,19 @@ fun VideoDetailScreen(
                 }
             }
             // 底部评论Ui
-            BottomCommentUi(replyCount = videoDetailUiState.videoDetailReply?.consumption?.replyCount ?: 0)
+            BottomCommentUi(
+                replyCount = videoDetailUiState.videoDetailReply?.consumption?.replyCount ?: 0,
+                onSendComment = {
+                    NavHostController.navToLogin()
+                },
+                onReplyClick = {
+                    coroutineScope.launch {
+                        relatedAndCommentsLazyListState.animateScrollToItem(
+                            index = videoDetailUiState.videoRelatedReply?.itemList?.size ?: 0,
+                        )
+                    }
+                },
+            )
         }
     }
     BackHandler {
@@ -900,8 +915,8 @@ fun ReplyBeanForClient(
         )
         Column(
             modifier = Modifier
-                .width(0.dp)
-                .weight(1f)
+                .width(width = 0.dp)
+                .weight(weight = 1f)
                 .padding(start = 12.dp, top = 14.dp, end = 14.dp)
                 .wrapContentHeight(),
         ) {
@@ -1121,6 +1136,8 @@ fun ReplyBeanForClient(
 @Composable
 fun BottomCommentUi(
     replyCount: Int = 0,
+    onSendComment: () -> Unit = {},
+    onReplyClick: () -> Unit = {},
 ) {
     val context = LocalContext.current
     Row(
@@ -1149,7 +1166,10 @@ fun BottomCommentUi(
                 .height(40.dp)
                 .background(color = Black95, shape = RoundedCornerShape(size = 2.dp))
                 .border(width = 1.dp, color = White80, shape = RoundedCornerShape(size = 2.dp))
-                .padding(horizontal = 12.dp),
+                .padding(horizontal = 12.dp)
+                .clickableNoRipple {
+                    onSendComment()
+                },
             contentAlignment = Alignment.CenterStart,
         ) {
             Text(
@@ -1160,20 +1180,29 @@ fun BottomCommentUi(
                     ?.let { FontFamily(it) },
             )
         }
-        Image(
-            painter = painterResource(id = R.drawable.ic_reply_white_20dp),
-            contentDescription = null,
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(space = 12.dp),
             modifier = Modifier
-                .size(size = 20.dp),
-        )
-        Text(
-            text = replyCount.toString(),
-            color = White20,
-            fontSize = 12.sp,
-            fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_l_gb_regular)
-                ?.let { FontFamily(it) },
-            modifier = Modifier.padding(end = 14.dp),
-        )
+                .padding(end = 14.dp)
+                .clickableNoRipple {
+                    onReplyClick()
+                },
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_reply_white_20dp),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(size = 20.dp),
+            )
+            Text(
+                text = replyCount.toString(),
+                color = White20,
+                fontSize = 12.sp,
+                fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_l_gb_regular)
+                    ?.let { FontFamily(it) },
+            )
+        }
     }
 }
 

@@ -111,9 +111,7 @@ fun LoginScreen() {
                         .align(alignment = Alignment.CenterEnd)
                         .padding(horizontal = 14.dp)
                         .clickableNoRipple {
-                            NavHostController
-                                .get()
-                                .navigate("${NavRoute.WEB}?${Constant.Key.WEB_URL}=${Constant.Url.FORGET_PASSWORD}")
+                            NavHostController.navToWeb(url = Constant.Url.FORGET_PASSWORD)
                         },
                 )
             }
@@ -252,8 +250,7 @@ fun LoginScreen() {
                     fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_db1_gb_regular)
                         ?.let { FontFamily(it) },
                     modifier = Modifier.clickableNoRipple {
-                        NavHostController.get()
-                            .navigate("${NavRoute.WEB}?${Constant.Key.WEB_URL}=${Constant.Url.USER_REGISTER}")
+                        NavHostController.navToWeb(url = Constant.Url.USER_REGISTER)
                     },
                 )
                 // 作者登录
@@ -264,8 +261,7 @@ fun LoginScreen() {
                     fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_db1_gb_regular)
                         ?.let { FontFamily(it) },
                     modifier = Modifier.clickableNoRipple {
-                        NavHostController.get()
-                            .navigate("${NavRoute.WEB}?${Constant.Key.WEB_URL}=${Constant.Url.AUTHOR_LOGIN}")
+                        NavHostController.navToWeb(url = Constant.Url.AUTHOR_LOGIN)
                     },
                 )
             }
@@ -349,8 +345,7 @@ fun LoginScreen() {
                 onClick = {
                     if (it in loginOrRegisterAgree.length..loginOrRegisterAgree.length + userServiceAgreement.length) {
                         // 点击了用户服务协议
-                        NavHostController.get()
-                            .navigate("${NavRoute.WEB}?${Constant.Key.WEB_URL}=${Constant.Url.USER_SERVICE_AGREEMENT}")
+                        NavHostController.navToWeb(url = Constant.Url.USER_SERVICE_AGREEMENT)
                     }
                 },
             )
