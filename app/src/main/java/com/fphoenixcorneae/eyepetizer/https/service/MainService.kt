@@ -2,6 +2,7 @@ package com.fphoenixcorneae.eyepetizer.https.service
 
 import com.fphoenixcorneae.eyepetizer.mvi.model.CommunityReply
 import com.fphoenixcorneae.eyepetizer.mvi.model.HomepageReply
+import com.fphoenixcorneae.eyepetizer.mvi.model.PushMessageReply
 import retrofit2.http.GET
 import retrofit2.http.Url
 
@@ -22,4 +23,10 @@ interface MainService {
      */
     @GET
     suspend fun getCommunityData(@Url url: String): CommunityReply?
+
+    /**
+     * 通知-推送列表
+     */
+    @GET
+    suspend fun getNotificationPushMessage(@Url url: String): PushMessageReply?
 }

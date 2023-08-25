@@ -17,6 +17,9 @@ object EyepetizerApi {
     const val COMMUNITY_COMMEND = "${BASE_URL}api/v7/community/tab/rec"
     const val COMMUNITY_FOLLOW = "${BASE_URL}api/v6/community/tab/follow"
 
+    // 通知
+    const val NOTIFICATION_PUSH_MESSAGE = "${BASE_URL}api/v3/messages"
+
     // 视频详情
     const val VIDEO_DETAIL_COMMENTS = "${BASE_URL}api/v2/replies/video?videoId="
 }

@@ -26,8 +26,10 @@ class CommonParamsInterceptor : Interceptor {
             addQueryParameter("first_channel", RomUtil.romInfo?.name ?: "unknown")
             addQueryParameter("last_channel", RomUtil.romInfo?.name ?: "unknown")
             addQueryParameter("system_version_code", "$sdkVersionCode")
-            // 首页推荐接口附加 vc、vn 这两个字段后，请求无响应。
-            if (!originalHttpUrl.toString().contains(EyepetizerApi.HOMEPAGE_COMMEND)) {
+            // 首页推荐、通知推送消息接口附加 vc、vn 这两个字段后，请求无响应。
+            if (!originalHttpUrl.toString().contains(EyepetizerApi.HOMEPAGE_COMMEND)
+                && !originalHttpUrl.toString().contains(EyepetizerApi.NOTIFICATION_PUSH_MESSAGE)
+            ) {
                 // 开眼当前应用程序的版本号
                 addQueryParameter("vc", "6030012")
                 // 开眼当前应用程序的版本名
