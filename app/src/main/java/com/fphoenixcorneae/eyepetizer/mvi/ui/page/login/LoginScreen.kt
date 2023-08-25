@@ -164,9 +164,9 @@ fun LoginScreen() {
                         ?.let { FontFamily(it) },
                 ),
                 startIcon = R.drawable.ic_account_white_24dp,
-                startCheckedIcon = R.drawable.ic_account_white_24dp,
+                startFocusedIcon = R.drawable.ic_account_white_24dp,
                 startIconSize = 20.dp,
-                paddingHorizontal = 0.dp,
+                paddingEnd = 16.dp,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             )
             Divider(
@@ -199,9 +199,9 @@ fun LoginScreen() {
                         ?.let { FontFamily(it) },
                 ),
                 startIcon = R.drawable.ic_password_white_24dp,
-                startCheckedIcon = R.drawable.ic_password_white_24dp,
+                startFocusedIcon = R.drawable.ic_password_white_24dp,
                 startIconSize = 20.dp,
-                paddingHorizontal = 0.dp,
+                paddingEnd = 16.dp,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
                 visualTransformation = PasswordVisualTransformation(),
             )

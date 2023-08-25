@@ -16,10 +16,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,9 +41,9 @@ import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.LocalThemeColors
 @Preview
 @Composable
 fun BottomNavigationBar(
+    selectedIndex: Int = 0,
     onTabClick: (Int) -> Unit = {},
 ) {
-    var selectedPos by remember { mutableStateOf(0) }
     val navTabs = listOf(
         NavigationTab(
             name = stringResource(R.string.homepage),
@@ -98,9 +94,8 @@ fun BottomNavigationBar(
         ) {
             navTabs.forEachIndexed { index, navigationTab ->
                 navigationTab?.let {
-                    BottomNavigationBarItem(navigationTab = it, isSelected = selectedPos == index) {
-                        if (selectedPos != index) {
-                            selectedPos = index
+                    BottomNavigationBarItem(navigationTab = it, isSelected = selectedIndex == index) {
+                        if (selectedIndex != index) {
                             onTabClick(index)
                         }
                     }
@@ -110,8 +105,7 @@ fun BottomNavigationBar(
                     modifier = Modifier
                         .size(30.dp)
                         .clickableNoRipple {
-                            if (selectedPos != index) {
-                                selectedPos = index
+                            if (selectedIndex != index) {
                                 onTabClick(index)
                             }
                         }

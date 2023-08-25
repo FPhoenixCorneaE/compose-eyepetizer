@@ -26,6 +26,8 @@ import androidx.compose.ui.zIndex
 import androidx.core.content.res.ResourcesCompat
 import com.fphoenixcorneae.eyepetizer.R
 import com.fphoenixcorneae.eyepetizer.ext.clickableNoRipple
+import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavHostController
+import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavRoute
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Gray
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.LocalThemeColors
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.SystemUiScaffold
@@ -80,7 +82,9 @@ fun CommunityScreen() {
                         .size(size = 44.dp)
                         .padding(12.dp)
                         .clickableNoRipple {
-
+                            NavHostController
+                                .get()
+                                .navigate(NavRoute.SEARCH)
                         },
                 )
             }

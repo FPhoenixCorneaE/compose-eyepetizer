@@ -29,4 +29,10 @@ interface MainService {
      */
     @GET
     suspend fun getNotificationPushMessage(@Url url: String): PushMessageReply?
+
+    /**
+     * 搜索-热搜关键词
+     */
+    @GET("api/v3/queries/hot")
+    suspend fun getHotSearchKeys(): List<String>?
 }

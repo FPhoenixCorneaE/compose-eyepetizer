@@ -13,6 +13,7 @@ import com.fphoenixcorneae.eyepetizer.mvi.ui.page.MainScreen
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.SplashScreen
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.detail.VideoDetailScreen
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.login.LoginScreen
+import com.fphoenixcorneae.eyepetizer.mvi.ui.page.search.SearchScreen
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.web.WebScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -80,6 +81,15 @@ fun EyepetizerScreen() {
                 url = backStackEntry.arguments?.getString(Constant.Key.WEB_URL)
                     .orEmpty(),
             )
+        }
+        composable(
+            route = NavRoute.SEARCH,
+            enterTransition = { slideInVertically(initialOffsetY = { -it }) + fadeIn() },
+            exitTransition = { slideOutVertically(targetOffsetY = { -it }) + fadeOut() },
+            popEnterTransition = { slideInVertically(initialOffsetY = { -it }) + fadeIn() },
+            popExitTransition = { slideOutVertically(targetOffsetY = { -it }) + fadeOut() },
+        ) {
+            SearchScreen()
         }
     }
 }

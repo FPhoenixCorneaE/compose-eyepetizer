@@ -10,6 +10,7 @@ object NavRoute {
     const val LOGIN = "login"
     const val VIDEO_DETAIL = "video_detail"
     const val WEB = "web"
+    const val SEARCH = "search"
 
     /**
      * @desc：主页

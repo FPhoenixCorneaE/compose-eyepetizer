@@ -47,4 +47,7 @@
     <string name="my_badge">我的徽章</string>
     <string name="feedback">意见反馈</string>
     <string name="want_contribute">我要投稿</string>
+    <string name="search_hint">搜索视频、作者、用户及标签</string>
+    <string name="cancel">取消</string>
+    <string name="search_hot_keys">热搜关键词</string>
 </resources>

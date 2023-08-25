@@ -40,9 +40,32 @@ import androidx.compose.ui.unit.dp
 import com.fphoenixcorneae.eyepetizer.ext.clickableNoRipple
 
 /**
- * @param hint: 空字符时的提示
- * @param startIcon: 左侧图标;  -1 则不显示
- * @param iconSpacing: 左侧图标与文字的距离; 相当于: drawablePadding
+ * @param modifier             修饰符
+ * @param text                 输入文字
+ * @param onValueChange        输入文字变化监听
+ * @param onFocusChanged       焦点变化监听
+ * @param backgroundColor      背景颜色
+ * @param corners              背景圆角
+ * @param borderStroke         背景边框
+ * @param paddingEnd           输入框右边内边距
+ * @param hint                 空字符时的提示文字
+ * @param hintColor            提示文字颜色
+ * @param startIcon            左侧图标;  -1 则不显示
+ * @param startFocusedIcon     获取焦点时左侧图标;  -1 则不显示
+ * @param startIconSize        左侧图标大小
+ * @param startIconMargin      左侧图标左边外边距
+ * @param iconSpacing          左侧图标与文字的距离; 相当于: drawablePadding
+ * @param endIcon              右侧图标;  -1 则不显示
+ * @param endIconSize          右侧图标大小
+ * @param onEndIconClick       右侧图标点击监听
+ * @param singleLine           是否单行
+ * @param enabled              控制BasicTextField的启用状态。当为false时，文本字段将既不可编辑也不可聚焦，文本字段的输入将不可选择
+ * @param readOnly             控制BasicTextField的可编辑状态。当为true时，文本字段不能被修改，但是，用户可以聚焦它并从中复制文本。只读文本字段通常用于显示用户无法编辑的预填写表单
+ * @param textStyle            文字样式
+ * @param keyboardOptions      键盘设置
+ * @param keyboardActions      键盘点击监听
+ * @param visualTransformation 用于更改输入的可视表示的可视转换过滤器。默认情况下，不应用可视转换。
+ * @param cursorBrush          光标
  */
 @Composable
 fun CustomEditText(
@@ -53,16 +76,18 @@ fun CustomEditText(
     backgroundColor: Color = White,
     corners: Dp = 2.dp,
     borderStroke: BorderStroke = BorderStroke(width = 1.dp, color = Transparent),
-    paddingHorizontal: Dp = 12.dp,
+    paddingEnd: Dp = 12.dp,
     hint: String = "",
     hintColor: Color = Gray,
     @DrawableRes startIcon: Int = -1,
-    @DrawableRes startCheckedIcon: Int = -1,
+    @DrawableRes startFocusedIcon: Int = -1,
     startIconSize: Dp = 12.dp,
+    startIconMargin: Dp = 0.dp,
     iconSpacing: Dp = 4.dp,
     @DrawableRes endIcon: Int = -1,
     endIconSize: Dp = 12.dp,
     onEndIconClick: () -> Unit = {},
+    singleLine: Boolean = true,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = TextStyle.Default,
@@ -84,7 +109,7 @@ fun CustomEditText(
                     hasFocus = it.isFocused
                     onFocusChanged(it.isFocused)
                 },
-            singleLine = true,
+            singleLine = singleLine,
             enabled = enabled,
             readOnly = readOnly,
             textStyle = textStyle,
@@ -105,21 +130,25 @@ fun CustomEditText(
                         Image(
                             painter = painterResource(id = startIcon),
                             contentDescription = null,
-                            modifier = Modifier.size(size = startIconSize)
+                            modifier = Modifier
+                                .padding(start = startIconMargin)
+                                .size(size = startIconSize),
                         )
                         Spacer(modifier = Modifier.width(iconSpacing))
-                    } else if (hasFocus && startCheckedIcon != -1) {
+                    } else if (hasFocus && startFocusedIcon != -1) {
                         Image(
-                            painter = painterResource(id = startCheckedIcon),
+                            painter = painterResource(id = startFocusedIcon),
                             contentDescription = null,
-                            modifier = Modifier.size(size = startIconSize)
+                            modifier = Modifier
+                                .padding(start = startIconMargin)
+                                .size(size = startIconSize),
                         )
                         Spacer(modifier = Modifier.width(iconSpacing))
                     }
 
                     Box(
                         modifier = Modifier
-                            .padding(horizontal = paddingHorizontal)
+                            .padding(end = paddingEnd)
                             .weight(1f)
                     ) {
                         // 当空字符时, 显示hint

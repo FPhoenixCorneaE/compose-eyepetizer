@@ -9,6 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.fphoenixcorneae.common.ext.exitApp
@@ -32,12 +36,13 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 fun MainScreen() {
     Column(modifier = Modifier.fillMaxSize()) {
         val animatedNavController = rememberAnimatedNavController()
+        var selectedIndex by rememberSaveable { mutableStateOf(0) }
         AnimatedNavHost(
             navController = animatedNavController,
             startDestination = NavRoute.Main.HOMEPAGE,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(0.dp)
+                .height(height = 0.dp)
                 .weight(weight = 1f)
         ) {
             composable(
@@ -69,7 +74,10 @@ fun MainScreen() {
                 MineScreen()
             }
         }
-        BottomNavigationBar {
+        BottomNavigationBar(selectedIndex = selectedIndex) {
+            if (it != 2) {
+                selectedIndex = it
+            }
             when (it) {
                 0 -> animatedNavController.navigate(NavRoute.Main.HOMEPAGE)
                 1 -> animatedNavController.navigate(NavRoute.Main.COMMUNITY)
