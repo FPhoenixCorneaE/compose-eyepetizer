@@ -5,6 +5,8 @@ package com.fphoenixcorneae.eyepetizer.const
  * @date：2023/08/17 15:33
  */
 object Constant {
+    const val EYEPETIZER_VERSION_NAME = "6.3.1"
+    const val EYEPETIZER_VERSION_CODE = 6030012
 
     /**
      * @desc：Key

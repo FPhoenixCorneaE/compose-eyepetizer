@@ -39,4 +39,12 @@
     <string name="inbox">私信</string>
     <string name="notification_login_prompt_1">别错过重要的信息\n</string>
     <string name="notification_login_prompt_2">登录后即可查看评论回复、点赞及关注等通知信息</string>
+    <string name="mine_login_prompt">点击登录即可评论及发布内容</string>
+    <string name="version_show_format">Version %1$s</string>
+    <string name="my_follow">我的关注</string>
+    <string name="watch_record">观看记录</string>
+    <string name="notification_switch">通知开关</string>
+    <string name="my_badge">我的徽章</string>
+    <string name="feedback">意见反馈</string>
+    <string name="want_contribute">我要投稿</string>
 </resources>

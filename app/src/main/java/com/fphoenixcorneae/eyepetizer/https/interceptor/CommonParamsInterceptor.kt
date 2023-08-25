@@ -7,6 +7,7 @@ import com.fphoenixcorneae.common.ext.realScreenWidth
 import com.fphoenixcorneae.common.ext.sdkVersionCode
 import com.fphoenixcorneae.common.ext.uniqueDeviceId
 import com.fphoenixcorneae.common.util.RomUtil
+import com.fphoenixcorneae.eyepetizer.const.Constant
 import com.fphoenixcorneae.eyepetizer.https.EyepetizerApi
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -31,9 +32,9 @@ class CommonParamsInterceptor : Interceptor {
                 && !originalHttpUrl.toString().contains(EyepetizerApi.NOTIFICATION_PUSH_MESSAGE)
             ) {
                 // 开眼当前应用程序的版本号
-                addQueryParameter("vc", "6030012")
+                addQueryParameter("vc", Constant.EYEPETIZER_VERSION_CODE.toString())
                 // 开眼当前应用程序的版本名
-                addQueryParameter("vn", "6.3.1")
+                addQueryParameter("vn", Constant.EYEPETIZER_VERSION_NAME)
             }
         }.build()
         val request = originalRequest.newBuilder().url(url).build()
