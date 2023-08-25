@@ -37,4 +37,6 @@
     <string name="push">推送</string>
     <string name="interaction">互动</string>
     <string name="inbox">私信</string>
+    <string name="notification_login_prompt_1">别错过重要的信息\n</string>
+    <string name="notification_login_prompt_2">登录后即可查看评论回复、点赞及关注等通知信息</string>
 </resources>
