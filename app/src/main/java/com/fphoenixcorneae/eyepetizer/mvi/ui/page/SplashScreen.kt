@@ -40,7 +40,6 @@ import androidx.fragment.app.FragmentActivity
 import com.fphoenixcorneae.eyepetizer.R
 import com.fphoenixcorneae.eyepetizer.ext.requestPermissionsUsingPermissionX
 import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavHostController
-import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavRoute
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.White20
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.SystemUiScaffold
 import kotlinx.coroutines.delay
@@ -55,12 +54,29 @@ fun SplashScreen() {
     var allPermissionsGranted by remember { mutableStateOf(false) }
     val logoSloganAlpha by animateFloatAsState(
         targetValue = if (allPermissionsGranted) 1f else 0.5f,
-        animationSpec = tween(durationMillis = 3000)
+        animationSpec = tween(durationMillis = 3000),
+        label = "标语淡入动画",
     )
     val bgSplashScale by animateFloatAsState(
         targetValue = if (allPermissionsGranted) 1.05f else 1f,
-        animationSpec = tween(durationMillis = 3000)
+        animationSpec = tween(durationMillis = 3000),
+        label = "背景放大动画",
     )
+    SideEffect {
+        requestPermissionsUsingPermissionX(
+            activity = context as FragmentActivity,
+            permissions = listOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_PHONE_STATE
+            ),
+            explainMessage = context.getString(R.string.permission_explain),
+            forwardToSettingsMessage = context.getString(R.string.permission_explain),
+        ) { allGranted, _, _ ->
+            if (allGranted) {
+                allPermissionsGranted = true
+            }
+        }
+    }
     LaunchedEffect(key1 = logoSloganAlpha) {
         if (logoSloganAlpha == 1f) {
             // 动画结束
@@ -73,22 +89,13 @@ fun SplashScreen() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .paint(painterResource(id = R.mipmap.img_bg_window), contentScale = ContentScale.FillBounds)
+                .paint(
+                    painterResource(id = R.mipmap.img_bg_window),
+                    contentScale = ContentScale.FillBounds,
+                )
         ) {
             AnimatedVisibility(visible = allPermissionsGranted, enter = fadeIn()) {
                 SplashUi(logoSloganAlpha = logoSloganAlpha, bgSplashScale = bgSplashScale)
-            }
-        }
-    }
-    SideEffect {
-        requestPermissionsUsingPermissionX(
-            activity = context as FragmentActivity,
-            permissions = listOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE),
-            explainMessage = context.getString(R.string.permission_explain),
-            forwardToSettingsMessage = context.getString(R.string.permission_explain),
-        ) { allGranted, _, _ ->
-            if (allGranted) {
-                allPermissionsGranted = true
             }
         }
     }

@@ -58,7 +58,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.navOptions
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import coil.load
@@ -72,7 +71,6 @@ import com.fphoenixcorneae.eyepetizer.ext.clickableNoRipple
 import com.fphoenixcorneae.eyepetizer.ext.toVideoDuration
 import com.fphoenixcorneae.eyepetizer.mvi.model.HomepageReply
 import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavHostController
-import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavRoute
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Black20
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Black70
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Blue
@@ -133,9 +131,13 @@ fun HomepageItem(
             else -> {}
         }
 
-        "horizontalScrollCard" -> if (item.data?.dataType == "HorizontalScrollCard") HorizontalScrollCard(item = item)
+        "horizontalScrollCard" -> if (item.data?.dataType == "HorizontalScrollCard") HorizontalScrollCard(
+            item = item
+        )
 
-        "specialSquareCardCollection" -> if (item.data?.dataType == "ItemCollection") SpecialSquareCardCollection(item = item)
+        "specialSquareCardCollection" -> if (item.data?.dataType == "ItemCollection") SpecialSquareCardCollection(
+            item = item
+        )
 
         "columnCardList" -> if (item.data?.dataType == "ItemCollection") ColumnCardList(item = item)
 
@@ -157,7 +159,9 @@ fun HomepageItem(
 
         "informationCard" -> if (item.data?.dataType == "InformationCard") InformationCard(item = item)
 
-        "ugcSelectedCardCollection" -> if (item.data?.dataType == "ItemCollection") UgcSelectedCardCollection(item = item)
+        "ugcSelectedCardCollection" -> if (item.data?.dataType == "ItemCollection") UgcSelectedCardCollection(
+            item = item
+        )
 
         "autoPlayVideoAd" -> if (item.data?.dataType == "AutoPlayVideoAdDetail") AutoPlayVideoAd(
             item = item,
@@ -240,8 +244,7 @@ private fun TextCardHeader5(
                     color = LocalThemeColors.current.textColorSecondary,
                     fontSize = 10.sp,
                     fontFamily = ResourcesCompat.getFont(
-                        context,
-                        R.font.fz_lan_ting_hei_s_db1_gb_regular
+                        context, R.font.fz_lan_ting_hei_s_db1_gb_regular
                     )?.let { FontFamily(it) },
                 )
             }
@@ -291,13 +294,11 @@ private fun TextCardHeader7(
             colorFilter = ColorFilter.tint(color = Blue)
         )
         // 右边文案
-        Text(
-            text = item.data?.rightText.orEmpty(),
+        Text(text = item.data?.rightText.orEmpty(),
             color = Blue,
             fontSize = 14.sp,
             fontFamily = ResourcesCompat.getFont(
-                context,
-                R.font.fz_lan_ting_hei_s_db1_gb_regular
+                context, R.font.fz_lan_ting_hei_s_db1_gb_regular
             )?.let { FontFamily(it) },
             modifier = Modifier
                 .wrapContentSize()
@@ -305,8 +306,7 @@ private fun TextCardHeader7(
                     top.linkTo(arrow.top)
                     bottom.linkTo(arrow.bottom)
                     end.linkTo(arrow.start, margin = 5.dp)
-                }
-        )
+                })
     }
 }
 
@@ -350,21 +350,18 @@ private fun TextCardFooter2(
             colorFilter = ColorFilter.tint(color = Blue)
         )
         // 右边文案
-        Text(
-            text = item.data?.text.orEmpty(),
+        Text(text = item.data?.text.orEmpty(),
             color = Blue,
             fontSize = 14.sp,
             fontFamily = ResourcesCompat.getFont(
-                context,
-                R.font.fz_lan_ting_hei_s_db1_gb_regular
+                context, R.font.fz_lan_ting_hei_s_db1_gb_regular
             )?.let { FontFamily(it) },
             modifier = Modifier
                 .wrapContentSize()
                 .constrainAs(rightText) {
                     top.linkTo(parent.top, margin = 28.dp)
                     end.linkTo(arrow.start, margin = 5.dp)
-                }
-        )
+                })
     }
 }
 
@@ -417,8 +414,7 @@ private fun TextCardFooter3(
                 color = White,
                 fontSize = 14.sp,
                 fontFamily = ResourcesCompat.getFont(
-                    context,
-                    R.font.fz_lan_ting_hei_s_db1_gb_regular
+                    context, R.font.fz_lan_ting_hei_s_db1_gb_regular
                 )?.let { FontFamily(it) },
                 modifier = Modifier.padding(top = 7.dp)
             )
@@ -437,21 +433,18 @@ private fun TextCardFooter3(
             colorFilter = ColorFilter.tint(color = Blue)
         )
         // 右边文案
-        Text(
-            text = item.data?.text.orEmpty(),
+        Text(text = item.data?.text.orEmpty(),
             color = Blue,
             fontSize = 14.sp,
             fontFamily = ResourcesCompat.getFont(
-                context,
-                R.font.fz_lan_ting_hei_s_db1_gb_regular
+                context, R.font.fz_lan_ting_hei_s_db1_gb_regular
             )?.let { FontFamily(it) },
             modifier = Modifier
                 .wrapContentSize()
                 .constrainAs(rightText) {
                     top.linkTo(parent.top, margin = 28.dp)
                     end.linkTo(arrow.start, margin = 5.dp)
-                }
-        )
+                })
     }
 }
 
@@ -482,15 +475,12 @@ private fun HorizontalScrollCard(
         BannerViewPager(
             data = item.data?.itemList,
             imageModel = { item ->
-                ImageRequest.Builder(context)
-                    .data(item?.data?.image)
+                ImageRequest.Builder(context).data(item?.data?.image)
                     .transformations(RoundedCornersTransformation(density.run { 4.dp.toPx() }))
                     .placeholder(GradientDrawable().apply {
                         setColor(Gray20.toArgb())
                         cornerRadius = density.run { 4.dp.toPx() }
-                    })
-                    .crossfade(true)
-                    .build()
+                    }).crossfade(true).build()
             },
             modifier = Modifier
                 .fillMaxSize()
@@ -519,8 +509,9 @@ private fun HorizontalScrollCard(
                         color = White,
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
-                        fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_db1_gb_regular)
-                            ?.let { FontFamily(it) },
+                        fontFamily = ResourcesCompat.getFont(
+                            context, R.font.fz_lan_ting_hei_s_db1_gb_regular
+                        )?.let { FontFamily(it) },
                     )
                 }
             }
@@ -547,7 +538,13 @@ private fun SpecialSquareCardCollection(
             ),
             itemList = buildList {
                 repeat(16) {
-                    HomepageReply.Item.Data.Item()
+                    HomepageReply.Item.Data.Item(
+                        data = HomepageReply.Item.Data.Item.Data(
+                            title = "#广告",
+                            dataType = "SquareCard",
+                        ),
+                        type = "squareCardOfCategory",
+                    )
                 }
             },
         )
@@ -585,13 +582,11 @@ private fun SpecialSquareCardCollection(
             colorFilter = ColorFilter.tint(color = Blue)
         )
         // 右边文案
-        Text(
-            text = item.data?.header?.rightText.orEmpty(),
+        Text(text = item.data?.header?.rightText.orEmpty(),
             color = Blue,
             fontSize = 14.sp,
             fontFamily = ResourcesCompat.getFont(
-                context,
-                R.font.fz_lan_ting_hei_s_db1_gb_regular
+                context, R.font.fz_lan_ting_hei_s_db1_gb_regular
             )?.let { FontFamily(it) },
             modifier = Modifier
                 .wrapContentSize()
@@ -599,23 +594,21 @@ private fun SpecialSquareCardCollection(
                     top.linkTo(arrow.top)
                     bottom.linkTo(arrow.bottom)
                     end.linkTo(arrow.start, margin = 5.dp)
-                }
-        )
+                })
         // 分类
         LazyHorizontalGrid(
             rows = GridCells.Adaptive(minSize = 108.dp),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 53.dp, bottom = 12.dp)
-                .constrainAs(categories) {
-                },
+                .constrainAs(categories) {},
             contentPadding = PaddingValues(horizontal = 14.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            val categoryList = item.data?.itemList
-                ?.filter { it.type == "squareCardOfCategory" && it.data?.dataType == "SquareCard" }
-                .orEmpty()
+            val categoryList =
+                item.data?.itemList?.filter { it.type == "squareCardOfCategory" && it.data?.dataType == "SquareCard" }
+                    .orEmpty()
             items(items = categoryList) { category ->
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -633,13 +626,15 @@ private fun SpecialSquareCardCollection(
                             .build(),
                         contentDescription = null,
                         modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.FillBounds,
                     )
                     Text(
                         text = category.data?.title.orEmpty(),
                         color = White,
                         fontSize = 14.sp,
-                        fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_db1_gb_regular)
-                            ?.let { FontFamily(it) },
+                        fontFamily = ResourcesCompat.getFont(
+                            context, R.font.fz_lan_ting_hei_s_db1_gb_regular
+                        )?.let { FontFamily(it) },
                     )
                 }
             }
@@ -668,7 +663,13 @@ private fun ColumnCardList(
             ),
             itemList = buildList {
                 repeat(4) {
-                    HomepageReply.Item.Data.Item()
+                    HomepageReply.Item.Data.Item(
+                        data = HomepageReply.Item.Data.Item.Data(
+                            title = "爱，在与你相遇的每一个瞬间",
+                            dataType = "SquareCard",
+                        ),
+                        type = "squareCardOfColumn",
+                    )
                 }
             },
         )
@@ -706,13 +707,11 @@ private fun ColumnCardList(
             colorFilter = ColorFilter.tint(color = Blue)
         )
         // 右边文案
-        Text(
-            text = item.data?.header?.rightText.orEmpty(),
+        Text(text = item.data?.header?.rightText.orEmpty(),
             color = Blue,
             fontSize = 14.sp,
             fontFamily = ResourcesCompat.getFont(
-                context,
-                R.font.fz_lan_ting_hei_s_db1_gb_regular
+                context, R.font.fz_lan_ting_hei_s_db1_gb_regular
             )?.let { FontFamily(it) },
             modifier = Modifier
                 .wrapContentSize()
@@ -720,23 +719,21 @@ private fun ColumnCardList(
                     top.linkTo(arrow.top)
                     bottom.linkTo(arrow.bottom)
                     end.linkTo(arrow.start, margin = 5.dp)
-                }
-        )
+                })
         // 卡片
         LazyVerticalGrid(
             columns = GridCells.Fixed(count = 2),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 53.dp, bottom = 12.dp)
-                .constrainAs(cards) {
-                },
+                .constrainAs(cards) {},
             contentPadding = PaddingValues(horizontal = 14.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            val categoryList = item.data?.itemList
-                ?.filter { it.type == "squareCardOfColumn" && it.data?.dataType == "SquareCard" }
-                .orEmpty()
+            val categoryList =
+                item.data?.itemList?.filter { it.type == "squareCardOfColumn" && it.data?.dataType == "SquareCard" }
+                    .orEmpty()
             items(items = categoryList) { category ->
                 Box(
                     modifier = Modifier
@@ -762,8 +759,9 @@ private fun ColumnCardList(
                         text = category.data?.title.orEmpty(),
                         color = White,
                         fontSize = 14.sp,
-                        fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_db1_gb_regular)
-                            ?.let { FontFamily(it) },
+                        fontFamily = ResourcesCompat.getFont(
+                            context, R.font.fz_lan_ting_hei_s_db1_gb_regular
+                        )?.let { FontFamily(it) },
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -798,15 +796,12 @@ private fun Banner(
     ) {
         // 横幅图片
         AsyncImage(
-            model = ImageRequest.Builder(context)
-                .data(data = item.data?.image)
+            model = ImageRequest.Builder(context).data(data = item.data?.image)
                 .transformations(RoundedCornersTransformation(LocalDensity.current.run { 4.dp.toPx() }))
                 .placeholder(GradientDrawable().apply {
                     setColor(Gray20.toArgb())
                     cornerRadius = LocalDensity.current.run { 4.dp.toPx() }
-                })
-                .crossfade(true)
-                .build(),
+                }).crossfade(true).build(),
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
@@ -832,8 +827,7 @@ private fun Banner3(
         data = HomepageReply.Item.Data(
             label = HomepageReply.Item.Data.Item.Data.Label(
                 text = "广告",
-            ),
-            header = HomepageReply.Item.Data.Header(
+            ), header = HomepageReply.Item.Data.Header(
                 title = "J12. IT’S ALL ABOUT SECONDS*",
                 description = "*J12腕表 分秒背后",
             )
@@ -849,15 +843,12 @@ private fun Banner3(
         val (image, label, avatar, title, description, divider) = createRefs()
         // 图片
         AsyncImage(
-            model = ImageRequest.Builder(context)
-                .data(data = item.data?.image)
+            model = ImageRequest.Builder(context).data(data = item.data?.image)
                 .transformations(RoundedCornersTransformation(LocalDensity.current.run { 4.dp.toPx() }))
                 .placeholder(GradientDrawable().apply {
                     setColor(Gray20.toArgb())
                     cornerRadius = LocalDensity.current.run { 4.dp.toPx() }
-                })
-                .crossfade(true)
-                .build(),
+                }).crossfade(true).build(),
             contentDescription = null,
             modifier = Modifier
                 .height(185.dp)
@@ -892,8 +883,9 @@ private fun Banner3(
                     color = White,
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
-                    fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_db1_gb_regular)
-                        ?.let { FontFamily(it) },
+                    fontFamily = ResourcesCompat.getFont(
+                        context, R.font.fz_lan_ting_hei_s_db1_gb_regular
+                    )?.let { FontFamily(it) },
                 )
             }
         }
@@ -902,9 +894,12 @@ private fun Banner3(
             model = ImageRequest.Builder(context)
                 .data(data = item.data?.header?.icon)
                 .transformations(CircleCropTransformation())
+                .placeholder(GradientDrawable().apply {
+                    shape = GradientDrawable.OVAL
+                    setColor(Gray20.toArgb())
+                })
                 .error(R.drawable.ic_avatar_gray_76dp)
-                .crossfade(true)
-                .build(),
+                .crossfade(true).build(),
             contentDescription = null,
             modifier = Modifier
                 .size(size = 40.dp)
@@ -926,13 +921,12 @@ private fun Banner3(
             overflow = TextOverflow.Ellipsis,
             softWrap = false,
             maxLines = 1,
-            modifier = Modifier
-                .constrainAs(title) {
-                    top.linkTo(avatar.top, margin = 2.dp)
-                    start.linkTo(avatar.end, margin = 12.dp)
-                    end.linkTo(description.end)
-                    width = Dimension.fillToConstraints
-                },
+            modifier = Modifier.constrainAs(title) {
+                top.linkTo(avatar.top, margin = 2.dp)
+                start.linkTo(avatar.end, margin = 12.dp)
+                end.linkTo(description.end)
+                width = Dimension.fillToConstraints
+            },
         )
         // 描述
         Text(
@@ -945,13 +939,12 @@ private fun Banner3(
             overflow = TextOverflow.Ellipsis,
             softWrap = false,
             maxLines = 1,
-            modifier = Modifier
-                .constrainAs(description) {
-                    top.linkTo(title.bottom, margin = 2.dp)
-                    start.linkTo(title.start)
-                    end.linkTo(image.end, margin = 35.dp)
-                    width = Dimension.fillToConstraints
-                },
+            modifier = Modifier.constrainAs(description) {
+                top.linkTo(title.bottom, margin = 2.dp)
+                start.linkTo(title.start)
+                end.linkTo(image.end, margin = 35.dp)
+                width = Dimension.fillToConstraints
+            },
         )
         // 分割线
         Divider(
@@ -992,15 +985,12 @@ private fun VideoSmallCard(
         val (cover, duration, title, description, share) = createRefs()
         // 视频封面
         AsyncImage(
-            model = ImageRequest.Builder(context)
-                .data(data = item.data?.cover?.feed)
+            model = ImageRequest.Builder(context).data(data = item.data?.cover?.feed)
                 .transformations(RoundedCornersTransformation(LocalDensity.current.run { 4.dp.toPx() }))
                 .placeholder(GradientDrawable().apply {
                     setColor(Gray20.toArgb())
                     cornerRadius = LocalDensity.current.run { 4.dp.toPx() }
-                })
-                .crossfade(true)
-                .build(),
+                }).crossfade(true).build(),
             contentDescription = null,
             modifier = Modifier
                 .width(173.dp)
@@ -1043,13 +1033,12 @@ private fun VideoSmallCard(
             textAlign = TextAlign.Start,
             overflow = TextOverflow.Ellipsis,
             maxLines = 2,
-            modifier = Modifier
-                .constrainAs(title) {
-                    top.linkTo(cover.top, margin = 8.dp)
-                    start.linkTo(cover.end, margin = 12.dp)
-                    end.linkTo(parent.end, margin = 14.dp)
-                    width = Dimension.fillToConstraints
-                },
+            modifier = Modifier.constrainAs(title) {
+                top.linkTo(cover.top, margin = 8.dp)
+                start.linkTo(cover.end, margin = 12.dp)
+                end.linkTo(parent.end, margin = 14.dp)
+                width = Dimension.fillToConstraints
+            },
         )
         // 描述
         Text(
@@ -1062,13 +1051,12 @@ private fun VideoSmallCard(
             overflow = TextOverflow.Ellipsis,
             softWrap = false,
             maxLines = 1,
-            modifier = Modifier
-                .constrainAs(description) {
-                    bottom.linkTo(cover.bottom, margin = 8.dp)
-                    start.linkTo(title.start)
-                    end.linkTo(share.start, margin = 16.dp, goneMargin = 14.dp)
-                    width = Dimension.fillToConstraints
-                },
+            modifier = Modifier.constrainAs(description) {
+                bottom.linkTo(cover.bottom, margin = 8.dp)
+                start.linkTo(title.start)
+                end.linkTo(share.start, margin = 16.dp, goneMargin = 14.dp)
+                width = Dimension.fillToConstraints
+            },
         )
         // 分享
         Image(
@@ -1104,9 +1092,12 @@ private fun TagBriefCard(
         val (icon, title, description, follow) = createRefs()
         // 图标
         AsyncImage(
-            model = ImageRequest.Builder(context)
-                .data(data = item.data?.icon)
+            model = ImageRequest.Builder(context).data(data = item.data?.icon)
                 .transformations(RoundedCornersTransformation(LocalDensity.current.run { 4.dp.toPx() }))
+                .placeholder(GradientDrawable().apply {
+                    setColor(Gray20.toArgb())
+                    cornerRadius = LocalDensity.current.run { 4.dp.toPx() }
+                })
                 .crossfade(true)
                 .build(),
             contentDescription = null,
@@ -1130,13 +1121,12 @@ private fun TagBriefCard(
             overflow = TextOverflow.Ellipsis,
             softWrap = false,
             maxLines = 1,
-            modifier = Modifier
-                .constrainAs(title) {
-                    top.linkTo(icon.top, margin = 8.dp)
-                    start.linkTo(icon.end, margin = 12.dp)
-                    end.linkTo(description.end)
-                    width = Dimension.fillToConstraints
-                },
+            modifier = Modifier.constrainAs(title) {
+                top.linkTo(icon.top, margin = 8.dp)
+                start.linkTo(icon.end, margin = 12.dp)
+                end.linkTo(description.end)
+                width = Dimension.fillToConstraints
+            },
         )
         // 描述
         Text(
@@ -1149,13 +1139,12 @@ private fun TagBriefCard(
             overflow = TextOverflow.Ellipsis,
             softWrap = false,
             maxLines = 1,
-            modifier = Modifier
-                .constrainAs(description) {
-                    top.linkTo(title.bottom, margin = 2.dp)
-                    start.linkTo(title.start)
-                    end.linkTo(follow.start, margin = 16.dp, goneMargin = 14.dp)
-                    width = Dimension.fillToConstraints
-                },
+            modifier = Modifier.constrainAs(description) {
+                top.linkTo(title.bottom, margin = 2.dp)
+                start.linkTo(title.start)
+                end.linkTo(follow.start, margin = 16.dp, goneMargin = 14.dp)
+                width = Dimension.fillToConstraints
+            },
         )
         // 关注
         AnimatedVisibility(
@@ -1184,8 +1173,7 @@ private fun TagBriefCard(
                     color = LocalThemeColors.current.textColorSecondary,
                     fontSize = 10.sp,
                     fontFamily = ResourcesCompat.getFont(
-                        context,
-                        R.font.fz_lan_ting_hei_s_db1_gb_regular
+                        context, R.font.fz_lan_ting_hei_s_db1_gb_regular
                     )?.let { FontFamily(it) },
                 )
             }
@@ -1213,9 +1201,12 @@ private fun TopicBriefCard(
         val (icon, title, description) = createRefs()
         // 图标
         AsyncImage(
-            model = ImageRequest.Builder(context)
-                .data(data = item.data?.icon)
+            model = ImageRequest.Builder(context).data(data = item.data?.icon)
                 .transformations(RoundedCornersTransformation(LocalDensity.current.run { 4.dp.toPx() }))
+                .placeholder(GradientDrawable().apply {
+                    setColor(Gray20.toArgb())
+                    cornerRadius = LocalDensity.current.run { 4.dp.toPx() }
+                })
                 .crossfade(true)
                 .build(),
             contentDescription = null,
@@ -1238,13 +1229,12 @@ private fun TopicBriefCard(
             textAlign = TextAlign.Start,
             overflow = TextOverflow.Ellipsis,
             maxLines = 2,
-            modifier = Modifier
-                .constrainAs(title) {
-                    top.linkTo(icon.top)
-                    start.linkTo(icon.end, margin = 12.dp)
-                    end.linkTo(description.end)
-                    width = Dimension.fillToConstraints
-                },
+            modifier = Modifier.constrainAs(title) {
+                top.linkTo(icon.top)
+                start.linkTo(icon.end, margin = 12.dp)
+                end.linkTo(description.end)
+                width = Dimension.fillToConstraints
+            },
         )
         // 描述
         Text(
@@ -1257,13 +1247,12 @@ private fun TopicBriefCard(
             overflow = TextOverflow.Ellipsis,
             softWrap = false,
             maxLines = 1,
-            modifier = Modifier
-                .constrainAs(description) {
-                    top.linkTo(title.bottom, margin = 2.dp)
-                    start.linkTo(title.start)
-                    end.linkTo(parent.end, margin = 14.dp)
-                    width = Dimension.fillToConstraints
-                },
+            modifier = Modifier.constrainAs(description) {
+                top.linkTo(title.bottom, margin = 2.dp)
+                start.linkTo(title.start)
+                end.linkTo(parent.end, margin = 14.dp)
+                width = Dimension.fillToConstraints
+            },
         )
     }
 }
@@ -1279,8 +1268,7 @@ private fun FollowCard(
                     ad = true,
                     duration = 130,
                 )
-            ),
-            header = HomepageReply.Item.Data.Header(
+            ), header = HomepageReply.Item.Data.Header(
                 title = "广告裁判",
                 description = "开眼广告精选 / #广告",
             )
@@ -1299,15 +1287,12 @@ private fun FollowCard(
         val (cover, choiceness, advert, duration, avatar, avatarStar, title, description, share, divider) = createRefs()
         // 视频封面
         AsyncImage(
-            model = ImageRequest.Builder(context)
-                .data(data = item.data?.content?.data?.cover?.feed)
+            model = ImageRequest.Builder(context).data(data = item.data?.content?.data?.cover?.feed)
                 .transformations(RoundedCornersTransformation(LocalDensity.current.run { 4.dp.toPx() }))
                 .placeholder(GradientDrawable().apply {
                     setColor(Gray20.toArgb())
                     cornerRadius = LocalDensity.current.run { 4.dp.toPx() }
-                })
-                .crossfade(true)
-                .build(),
+                }).crossfade(true).build(),
             contentDescription = null,
             modifier = Modifier
                 .height(183.dp)
@@ -1332,8 +1317,7 @@ private fun FollowCard(
             Image(
                 painter = painterResource(id = R.mipmap.ic_choiceness),
                 contentDescription = null,
-                modifier = Modifier
-                    .size(48.dp),
+                modifier = Modifier.size(48.dp),
             )
         }
         // 广告
@@ -1359,8 +1343,9 @@ private fun FollowCard(
                     color = White,
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
-                    fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_db1_gb_regular)
-                        ?.let { FontFamily(it) },
+                    fontFamily = ResourcesCompat.getFont(
+                        context, R.font.fz_lan_ting_hei_s_db1_gb_regular
+                    )?.let { FontFamily(it) },
                 )
             }
         }
@@ -1390,9 +1375,12 @@ private fun FollowCard(
             model = ImageRequest.Builder(context)
                 .data(data = item.data?.header?.icon)
                 .transformations(CircleCropTransformation())
+                .placeholder(GradientDrawable().apply {
+                    shape = GradientDrawable.OVAL
+                    setColor(Gray20.toArgb())
+                })
                 .error(R.drawable.ic_avatar_gray_76dp)
-                .crossfade(true)
-                .build(),
+                .crossfade(true).build(),
             contentDescription = null,
             modifier = Modifier
                 .size(size = 40.dp)
@@ -1427,13 +1415,12 @@ private fun FollowCard(
             overflow = TextOverflow.Ellipsis,
             softWrap = false,
             maxLines = 1,
-            modifier = Modifier
-                .constrainAs(title) {
-                    top.linkTo(avatar.top, margin = 2.dp)
-                    start.linkTo(avatar.end, margin = 12.dp)
-                    end.linkTo(description.end)
-                    width = Dimension.fillToConstraints
-                },
+            modifier = Modifier.constrainAs(title) {
+                top.linkTo(avatar.top, margin = 2.dp)
+                start.linkTo(avatar.end, margin = 12.dp)
+                end.linkTo(description.end)
+                width = Dimension.fillToConstraints
+            },
         )
         // 描述
         Text(
@@ -1446,13 +1433,12 @@ private fun FollowCard(
             overflow = TextOverflow.Ellipsis,
             softWrap = false,
             maxLines = 1,
-            modifier = Modifier
-                .constrainAs(description) {
-                    top.linkTo(title.bottom, margin = 2.dp)
-                    start.linkTo(title.start)
-                    end.linkTo(share.start, margin = 16.dp, goneMargin = 14.dp)
-                    width = Dimension.fillToConstraints
-                },
+            modifier = Modifier.constrainAs(description) {
+                top.linkTo(title.bottom, margin = 2.dp)
+                start.linkTo(title.start)
+                end.linkTo(share.start, margin = 16.dp, goneMargin = 14.dp)
+                width = Dimension.fillToConstraints
+            },
         )
         // 分享
         Image(
@@ -1483,15 +1469,11 @@ private fun FollowCard(
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
 private fun InformationCard(
-    item: HomepageReply.Item = HomepageReply.Item(
-        data = HomepageReply.Item.Data(
-            titleList = buildList {
-                repeat(4) {
-                    add("Netfix | 因社会戾气沉重，[黑镜]第六季或延迟推出")
-                }
-            }
-        )
-    ),
+    item: HomepageReply.Item = HomepageReply.Item(data = HomepageReply.Item.Data(titleList = buildList {
+        repeat(4) {
+            add("Netfix | 因社会戾气沉重，[黑镜]第六季或延迟推出")
+        }
+    })),
 ) {
     val context = LocalContext.current
     ConstraintLayout(
@@ -1502,26 +1484,24 @@ private fun InformationCard(
         val (cover, titleList) = createRefs()
         // 视频封面
         AsyncImage(
-            model = ImageRequest.Builder(context)
-                .data(data = item.data?.content?.data?.cover?.feed)
+            model = ImageRequest.Builder(context).data(data = item.data?.content?.data?.cover?.feed)
                 .transformations(
                     RoundedCornersTransformation(
                         topLeft = LocalDensity.current.run { 4.dp.toPx() },
                         topRight = LocalDensity.current.run { 4.dp.toPx() },
                     )
-                )
-                .placeholder(GradientDrawable().apply {
+                ).placeholder(GradientDrawable().apply {
                     setColor(Gray20.toArgb())
-                    cornerRadii = floatArrayOf(
+                    cornerRadii = floatArrayOf(LocalDensity.current.run { 4.dp.toPx() },
                         LocalDensity.current.run { 4.dp.toPx() },
                         LocalDensity.current.run { 4.dp.toPx() },
                         LocalDensity.current.run { 4.dp.toPx() },
-                        LocalDensity.current.run { 4.dp.toPx() },
-                        0f, 0f, 0f, 0f
+                        0f,
+                        0f,
+                        0f,
+                        0f
                     )
-                })
-                .crossfade(true)
-                .build(),
+                }).crossfade(true).build(),
             contentDescription = null,
             modifier = Modifier
                 .height(183.dp)
@@ -1537,8 +1517,7 @@ private fun InformationCard(
         Column(
             modifier = Modifier
                 .background(
-                    color = Gray,
-                    shape = RoundedCornerShape(bottomStart = 4.dp, bottomEnd = 4.dp)
+                    color = Gray, shape = RoundedCornerShape(bottomStart = 4.dp, bottomEnd = 4.dp)
                 )
                 .constrainAs(titleList) {
                     top.linkTo(cover.bottom)
@@ -1556,8 +1535,9 @@ private fun InformationCard(
                         text = it,
                         color = LocalThemeColors.current.textColor,
                         fontSize = 12.sp,
-                        fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_l_gb_regular)
-                            ?.let { FontFamily(it) },
+                        fontFamily = ResourcesCompat.getFont(
+                            context, R.font.fz_lan_ting_hei_s_l_gb_regular
+                        )?.let { FontFamily(it) },
                         modifier = Modifier.padding(horizontal = 12.dp),
                     )
                 }
@@ -1634,13 +1614,11 @@ private fun UgcSelectedCardCollection(
             colorFilter = ColorFilter.tint(color = Blue)
         )
         // 右边文案
-        Text(
-            text = item.data?.header?.rightText.orEmpty(),
+        Text(text = item.data?.header?.rightText.orEmpty(),
             color = Blue,
             fontSize = 14.sp,
             fontFamily = ResourcesCompat.getFont(
-                context,
-                R.font.fz_lan_ting_hei_s_db1_gb_regular
+                context, R.font.fz_lan_ting_hei_s_db1_gb_regular
             )?.let { FontFamily(it) },
             modifier = Modifier
                 .wrapContentSize()
@@ -1648,19 +1626,16 @@ private fun UgcSelectedCardCollection(
                     top.linkTo(arrow.top)
                     bottom.linkTo(arrow.bottom)
                     end.linkTo(arrow.start, margin = 5.dp)
-                }
-        )
+                })
         // 左边
         AsyncImage(
             model = ImageRequest.Builder(context)
-                .data(data = item.data?.itemList?.getOrNull(0)?.data?.url)
-                .transformations(
+                .data(data = item.data?.itemList?.getOrNull(0)?.data?.url).transformations(
                     RoundedCornersTransformation(
                         topLeft = LocalDensity.current.run { 4.dp.toPx() },
                         bottomLeft = LocalDensity.current.run { 4.dp.toPx() },
                     )
-                )
-                .placeholder(GradientDrawable().apply {
+                ).placeholder(GradientDrawable().apply {
                     setColor(Gray20.toArgb())
                     cornerRadii = floatArrayOf(
                         LocalDensity.current.run { 4.dp.toPx() },
@@ -1669,9 +1644,7 @@ private fun UgcSelectedCardCollection(
                         LocalDensity.current.run { 4.dp.toPx() },
                         LocalDensity.current.run { 4.dp.toPx() },
                     )
-                })
-                .crossfade(true)
-                .build(),
+                }).crossfade(true).build(),
             contentDescription = null,
             modifier = Modifier
                 .height(183.dp)
@@ -1703,10 +1676,8 @@ private fun UgcSelectedCardCollection(
         AsyncImage(
             model = ImageRequest.Builder(context)
                 .data(data = item.data?.itemList?.getOrNull(0)?.data?.userCover)
-                .transformations(CircleCropTransformation())
-                .error(R.drawable.ic_avatar_gray_76dp)
-                .crossfade(true)
-                .build(),
+                .transformations(CircleCropTransformation()).error(R.drawable.ic_avatar_gray_76dp)
+                .crossfade(true).build(),
             contentDescription = null,
             modifier = Modifier
                 .size(size = 20.dp)
@@ -1727,23 +1698,20 @@ private fun UgcSelectedCardCollection(
             overflow = TextOverflow.Ellipsis,
             softWrap = false,
             maxLines = 1,
-            modifier = Modifier
-                .constrainAs(nicknameLeft) {
-                    top.linkTo(avatarLeft.top)
-                    bottom.linkTo(avatarLeft.bottom)
-                    end.linkTo(imageLeft.end, margin = 4.dp)
-                },
+            modifier = Modifier.constrainAs(nicknameLeft) {
+                top.linkTo(avatarLeft.top)
+                bottom.linkTo(avatarLeft.bottom)
+                end.linkTo(imageLeft.end, margin = 4.dp)
+            },
         )
         // 右上
         AsyncImage(
             model = ImageRequest.Builder(context)
-                .data(data = item.data?.itemList?.getOrNull(1)?.data?.url)
-                .transformations(
+                .data(data = item.data?.itemList?.getOrNull(1)?.data?.url).transformations(
                     RoundedCornersTransformation(
                         topRight = LocalDensity.current.run { 4.dp.toPx() },
                     )
-                )
-                .placeholder(GradientDrawable().apply {
+                ).placeholder(GradientDrawable().apply {
                     setColor(Gray20.toArgb())
                     cornerRadii = floatArrayOf(
                         0f, 0f,
@@ -1751,19 +1719,16 @@ private fun UgcSelectedCardCollection(
                         LocalDensity.current.run { 4.dp.toPx() },
                         0f, 0f, 0f, 0f,
                     )
-                })
-                .crossfade(true)
-                .build(),
+                }).crossfade(true).build(),
             contentDescription = null,
-            modifier = Modifier
-                .constrainAs(imageRightTop) {
-                    start.linkTo(imageLeft.end, margin = 2.dp)
-                    top.linkTo(imageLeft.top)
-                    end.linkTo(arrow.end)
-                    bottom.linkTo(imageRightBottom.top)
-                    width = Dimension.fillToConstraints
-                    height = Dimension.fillToConstraints
-                },
+            modifier = Modifier.constrainAs(imageRightTop) {
+                start.linkTo(imageLeft.end, margin = 2.dp)
+                top.linkTo(imageLeft.top)
+                end.linkTo(arrow.end)
+                bottom.linkTo(imageRightBottom.top)
+                width = Dimension.fillToConstraints
+                height = Dimension.fillToConstraints
+            },
             contentScale = ContentScale.FillBounds,
         )
         AnimatedVisibility(
@@ -1786,10 +1751,8 @@ private fun UgcSelectedCardCollection(
         AsyncImage(
             model = ImageRequest.Builder(context)
                 .data(data = item.data?.itemList?.getOrNull(1)?.data?.userCover)
-                .transformations(CircleCropTransformation())
-                .error(R.drawable.ic_avatar_gray_76dp)
-                .crossfade(true)
-                .build(),
+                .transformations(CircleCropTransformation()).error(R.drawable.ic_avatar_gray_76dp)
+                .crossfade(true).build(),
             contentDescription = null,
             modifier = Modifier
                 .size(size = 20.dp)
@@ -1810,24 +1773,21 @@ private fun UgcSelectedCardCollection(
             overflow = TextOverflow.Ellipsis,
             softWrap = false,
             maxLines = 1,
-            modifier = Modifier
-                .constrainAs(nicknameRightTop) {
-                    top.linkTo(avatarRightTop.top)
-                    bottom.linkTo(avatarRightTop.bottom)
-                    end.linkTo(imageRightTop.end, margin = 4.dp)
-                },
+            modifier = Modifier.constrainAs(nicknameRightTop) {
+                top.linkTo(avatarRightTop.top)
+                bottom.linkTo(avatarRightTop.bottom)
+                end.linkTo(imageRightTop.end, margin = 4.dp)
+            },
         )
         // 右下
         AsyncImage(
             model = ImageRequest.Builder(context)
-                .data(data = item.data?.itemList?.getOrNull(2)?.data?.url)
-                .transformations(
+                .data(data = item.data?.itemList?.getOrNull(2)?.data?.url).transformations(
                     RoundedCornersTransformation(
                         topLeft = LocalDensity.current.run { 4.dp.toPx() },
                         bottomLeft = LocalDensity.current.run { 4.dp.toPx() },
                     )
-                )
-                .placeholder(GradientDrawable().apply {
+                ).placeholder(GradientDrawable().apply {
                     setColor(Gray20.toArgb())
                     cornerRadii = floatArrayOf(
                         0f, 0f, 0f, 0f,
@@ -1835,19 +1795,16 @@ private fun UgcSelectedCardCollection(
                         LocalDensity.current.run { 4.dp.toPx() },
                         0f, 0f,
                     )
-                })
-                .crossfade(true)
-                .build(),
+                }).crossfade(true).build(),
             contentDescription = null,
-            modifier = Modifier
-                .constrainAs(imageRightBottom) {
-                    start.linkTo(imageRightTop.start)
-                    top.linkTo(imageRightTop.bottom, margin = 2.dp)
-                    end.linkTo(imageRightTop.end)
-                    bottom.linkTo(parent.bottom)
-                    width = Dimension.fillToConstraints
-                    height = Dimension.fillToConstraints
-                },
+            modifier = Modifier.constrainAs(imageRightBottom) {
+                start.linkTo(imageRightTop.start)
+                top.linkTo(imageRightTop.bottom, margin = 2.dp)
+                end.linkTo(imageRightTop.end)
+                bottom.linkTo(parent.bottom)
+                width = Dimension.fillToConstraints
+                height = Dimension.fillToConstraints
+            },
             contentScale = ContentScale.FillBounds,
         )
         AnimatedVisibility(
@@ -1870,10 +1827,8 @@ private fun UgcSelectedCardCollection(
         AsyncImage(
             model = ImageRequest.Builder(context)
                 .data(data = item.data?.itemList?.getOrNull(2)?.data?.userCover)
-                .transformations(CircleCropTransformation())
-                .error(R.drawable.ic_avatar_gray_76dp)
-                .crossfade(true)
-                .build(),
+                .transformations(CircleCropTransformation()).error(R.drawable.ic_avatar_gray_76dp)
+                .crossfade(true).build(),
             contentDescription = null,
             modifier = Modifier
                 .size(size = 20.dp)
@@ -1894,12 +1849,11 @@ private fun UgcSelectedCardCollection(
             overflow = TextOverflow.Ellipsis,
             softWrap = false,
             maxLines = 1,
-            modifier = Modifier
-                .constrainAs(nicknameRightBottom) {
-                    top.linkTo(avatarRightBottom.top)
-                    bottom.linkTo(avatarRightBottom.bottom)
-                    end.linkTo(imageRightBottom.end, margin = 4.dp)
-                },
+            modifier = Modifier.constrainAs(nicknameRightBottom) {
+                top.linkTo(avatarRightBottom.top)
+                bottom.linkTo(avatarRightBottom.bottom)
+                end.linkTo(imageRightBottom.end, margin = 4.dp)
+            },
         )
     }
 }
@@ -1936,15 +1890,13 @@ private fun AutoPlayVideoAd(
                     start.linkTo(parent.start, margin = 14.dp)
                     end.linkTo(parent.end, margin = 14.dp)
                     width = Dimension.fillToConstraints
-                },
-            shape = RoundedCornerShape(size = 4.dp)
+                }, shape = RoundedCornerShape(size = 4.dp)
         ) {
             AndroidView(
                 factory = {
                     AutoPlayVideoPlayer(it)
                 },
-                modifier = Modifier
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
             ) {
                 it.run {
                     // 防止错位设置
@@ -2011,8 +1963,9 @@ private fun AutoPlayVideoAd(
                     color = White,
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
-                    fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_db1_gb_regular)
-                        ?.let { FontFamily(it) },
+                    fontFamily = ResourcesCompat.getFont(
+                        context, R.font.fz_lan_ting_hei_s_db1_gb_regular
+                    )?.let { FontFamily(it) },
                 )
             }
         }
@@ -2021,9 +1974,12 @@ private fun AutoPlayVideoAd(
             model = ImageRequest.Builder(context)
                 .data(data = item.data?.detail?.icon)
                 .transformations(CircleCropTransformation())
+                .placeholder(GradientDrawable().apply {
+                    shape = GradientDrawable.OVAL
+                    setColor(Gray20.toArgb())
+                })
                 .error(R.drawable.ic_avatar_gray_76dp)
-                .crossfade(true)
-                .build(),
+                .crossfade(true).build(),
             contentDescription = null,
             modifier = Modifier
                 .size(size = 40.dp)
@@ -2045,13 +2001,12 @@ private fun AutoPlayVideoAd(
             overflow = TextOverflow.Ellipsis,
             softWrap = false,
             maxLines = 1,
-            modifier = Modifier
-                .constrainAs(title) {
-                    top.linkTo(avatar.top, margin = 2.dp)
-                    start.linkTo(avatar.end, margin = 12.dp)
-                    end.linkTo(description.end)
-                    width = Dimension.fillToConstraints
-                },
+            modifier = Modifier.constrainAs(title) {
+                top.linkTo(avatar.top, margin = 2.dp)
+                start.linkTo(avatar.end, margin = 12.dp)
+                end.linkTo(description.end)
+                width = Dimension.fillToConstraints
+            },
         )
         // 描述
         Text(
@@ -2064,13 +2019,12 @@ private fun AutoPlayVideoAd(
             overflow = TextOverflow.Ellipsis,
             softWrap = false,
             maxLines = 1,
-            modifier = Modifier
-                .constrainAs(description) {
-                    top.linkTo(title.bottom, margin = 2.dp)
-                    start.linkTo(title.start)
-                    end.linkTo(video.end, margin = 35.dp)
-                    width = Dimension.fillToConstraints
-                },
+            modifier = Modifier.constrainAs(description) {
+                top.linkTo(title.bottom, margin = 2.dp)
+                start.linkTo(title.start)
+                end.linkTo(video.end, margin = 35.dp)
+                width = Dimension.fillToConstraints
+            },
         )
         // 分割线
         Divider(

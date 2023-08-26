@@ -1,5 +1,6 @@
 package com.fphoenixcorneae.eyepetizer.mvi.ui.page.notification
 
+import android.graphics.drawable.GradientDrawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -35,6 +37,7 @@ import com.fphoenixcorneae.common.ext.getFriendlyTimeSpanByNow
 import com.fphoenixcorneae.eyepetizer.R
 import com.fphoenixcorneae.eyepetizer.mvi.model.PushMessageReply
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Gray
+import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Gray20
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.LocalThemeColors
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.White
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.SwipeRefresh
@@ -78,6 +81,10 @@ fun NotificationPushItem(
             model = ImageRequest.Builder(context)
                 .data(data = item.icon)
                 .transformations(CircleCropTransformation())
+                .placeholder(GradientDrawable().apply {
+                    shape = GradientDrawable.OVAL
+                    setColor(Gray20.toArgb())
+                })
                 .error(R.mipmap.ic_launcher)
                 .crossfade(true)
                 .build(),

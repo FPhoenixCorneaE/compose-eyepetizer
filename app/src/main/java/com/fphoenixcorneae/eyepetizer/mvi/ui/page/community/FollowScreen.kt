@@ -204,6 +204,10 @@ fun AutoPlayFollowCard(
             model = ImageRequest.Builder(context)
                 .data(data = item.data?.run { header?.icon ?: content?.data?.author?.icon })
                 .transformations(CircleCropTransformation())
+                .placeholder(GradientDrawable().apply {
+                    shape = GradientDrawable.OVAL
+                    setColor(Gray20.toArgb())
+                })
                 .error(R.drawable.ic_avatar_gray_76dp)
                 .crossfade(true)
                 .build(),

@@ -77,7 +77,6 @@ import com.fphoenixcorneae.eyepetizer.ext.toReplyTimeString
 import com.fphoenixcorneae.eyepetizer.mvi.model.VideoCommentsReply
 import com.fphoenixcorneae.eyepetizer.mvi.model.VideoDetailReply
 import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavHostController
-import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavRoute
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.home.HomepageItem
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Black
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Black45
@@ -88,6 +87,7 @@ import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Black85
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Black95
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Blue
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Gray
+import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Gray20
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.White
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.White10
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.White20
@@ -127,12 +127,14 @@ fun VideoDetailScreen(
     val coroutineScope = rememberCoroutineScope()
     val density = LocalDensity.current
     var initial by remember { mutableStateOf(false) }
-    val viewModel: VideoDetailViewModel = viewModel(factory = VideoDetailViewModelFactory(videoId = videoId))
+    val viewModel: VideoDetailViewModel =
+        viewModel(factory = VideoDetailViewModelFactory(videoId = videoId))
     val videoDetailUiState by viewModel.videoDetailUiState.collectAsState()
     val videoComments = viewModel.videoComments.collectAsLazyPagingItems()
     val statusBarColor by animateColorAsState(
         targetValue = if (initial) Black else Color.Transparent,
-        animationSpec = tween(durationMillis = 600)
+        animationSpec = tween(durationMillis = 600),
+        label = "状态栏颜色渐变动画",
     )
     var videoPlayer by remember { mutableStateOf<DetailVideoPlayer?>(null) }
     var orientationUtils: OrientationUtils? = null
@@ -190,8 +192,7 @@ fun VideoDetailScreen(
         AsyncImage(
             model = ImageRequest.Builder(context)
                 .data(data = videoDetailUiState.videoDetailReply?.cover?.blurred)
-                .error(R.mipmap.img_bg_splash)
-                .build(),
+                .error(R.mipmap.img_bg_splash).build(),
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.FillBounds,
@@ -201,29 +202,25 @@ fun VideoDetailScreen(
                 .fillMaxSize()
                 .background(color = Black50)
         ) {
-            DisposableLifecycleEffect(
-                onPause = {
-                    videoPlayer?.onVideoPause()
-                },
-                onResume = {
-                    videoPlayer?.onVideoResume()
-                    videoPlayer?.onConfigurationChanged(
-                        /* activity = */ context.getActivity(),
-                        /* newConfig = */ configuration,
-                        /* orientationUtils = */ orientationUtils,
-                        /* hideActionBar = */ true,
-                        /* hideStatusBar = */ true,
-                    )
-                },
-                onDestroy = {
-                    GSYVideoManager.releaseAllVideos()
-                    orientationUtils?.releaseListener()
-                    orientationUtils = null
-                    videoPlayer?.release()
-                    videoPlayer?.setVideoAllCallBack(null)
-                    videoPlayer = null
-                }
-            ) {
+            DisposableLifecycleEffect(onPause = {
+                videoPlayer?.onVideoPause()
+            }, onResume = {
+                videoPlayer?.onVideoResume()
+                videoPlayer?.onConfigurationChanged(
+                    /* activity = */ context.getActivity(),
+                    /* newConfig = */ configuration,
+                    /* orientationUtils = */ orientationUtils,
+                    /* hideActionBar = */ true,
+                    /* hideStatusBar = */ true,
+                )
+            }, onDestroy = {
+                GSYVideoManager.releaseAllVideos()
+                orientationUtils?.releaseListener()
+                orientationUtils = null
+                videoPlayer?.release()
+                videoPlayer?.setVideoAllCallBack(null)
+                videoPlayer = null
+            }) {
                 initial = true
             }
             // 播放器
@@ -272,11 +269,15 @@ fun VideoDetailScreen(
                                     if (videoPlayer?.currentPlayer?.currentState != GSYVideoView.CURRENT_STATE_AUTO_COMPLETE) {
                                         delayHideBackJob?.cancel()
                                         if (!visibleBack) {
-                                            delayHideBackJob = coroutineScope.launch(Dispatchers.Main) {
-                                                delay(videoPlayer?.dismissControlTime?.toLong() ?: 3000)
-                                                visibleBack = false
-                                                visibleCollect = false
-                                            }
+                                            delayHideBackJob =
+                                                coroutineScope.launch(Dispatchers.Main) {
+                                                    delay(
+                                                        videoPlayer?.dismissControlTime?.toLong()
+                                                            ?: 3000
+                                                    )
+                                                    visibleBack = false
+                                                    visibleCollect = false
+                                                }
                                         }
                                         visibleBack = !visibleBack
                                         visibleCollect = !visibleCollect
@@ -311,8 +312,7 @@ fun VideoDetailScreen(
                     visibleShare = visibleShare,
                 )
             }
-            SwipeRefreshLayout(
-                isRefreshing = false,
+            SwipeRefreshLayout(isRefreshing = false,
                 onRefresh = {
                     NavHostController.get().navigateUp()
                 },
@@ -333,13 +333,13 @@ fun VideoDetailScreen(
                             text = stringResource(R.string.pull_down_to_close_page),
                             color = White,
                             fontSize = 10.sp,
-                            fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_l_gb_regular)
-                                ?.let { FontFamily(it) },
+                            fontFamily = ResourcesCompat.getFont(
+                                context, R.font.fz_lan_ting_hei_s_l_gb_regular
+                            )?.let { FontFamily(it) },
                             modifier = Modifier.align(alignment = Alignment.BottomCenter),
                         )
                     }
-                }
-            ) {
+                }) {
                 // 是否显示打字机效果
                 var showAnimated by remember { mutableStateOf(true) }
                 LaunchedEffect(key1 = videoId) {
@@ -349,7 +349,10 @@ fun VideoDetailScreen(
                 }
                 LazyColumn(state = relatedAndCommentsLazyListState) {
                     item {
-                        VideoInfo(videoDetailReply = videoDetailUiState.videoDetailReply, showAnimated = showAnimated)
+                        VideoInfo(
+                            videoDetailReply = videoDetailUiState.videoDetailReply,
+                            showAnimated = showAnimated
+                        )
                     }
                     item {
                         Spacer(
@@ -359,8 +362,11 @@ fun VideoDetailScreen(
                         )
                     }
                     items(videoDetailUiState.videoRelatedReply?.itemList?.size ?: 0) {
-                        val item = videoDetailUiState.videoRelatedReply?.itemList?.getOrNull(it) ?: return@items
-                        HomepageItem(item = item, position = it, playTag = Constant.PlayTag.VIDEO_DETAIL)
+                        val item = videoDetailUiState.videoRelatedReply?.itemList?.getOrNull(it)
+                            ?: return@items
+                        HomepageItem(
+                            item = item, position = it, playTag = Constant.PlayTag.VIDEO_DETAIL
+                        )
                     }
                     items(videoComments.itemCount) {
                         val item = videoComments[it] ?: return@items
@@ -379,6 +385,7 @@ fun VideoDetailScreen(
                     coroutineScope.launch {
                         relatedAndCommentsLazyListState.animateScrollToItem(
                             index = videoDetailUiState.videoRelatedReply?.itemList?.size ?: 0,
+                            scrollOffset = 0,
                         )
                     }
                 },
@@ -473,7 +480,9 @@ fun VideoPlayerControllerUi(
         ) {
             Row(
                 modifier = Modifier
-                    .background(color = Black60, shape = RoundedCornerShape(size = 4.dp))
+                    .background(
+                        color = Black60, shape = RoundedCornerShape(size = 4.dp)
+                    )
                     .padding(all = 2.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(space = 2.dp),
@@ -525,7 +534,7 @@ private fun VideoInfo(
         title = "迪拜：时光驻留，未来之城",
         library = "DAILY",
         category = "旅行",
-        description = "每当谈起迪拜，第一印象会是奢侈得流油，在经济繁荣的同时，迪拜也有它的另一副面孔。跟随创作者的镜头来到这座辉煌的「未来之城」迪拜，饱览一场城市与大自然的盛宴。迪拜是阿拉伯联合酋长国的瑰宝，也是中东地区的经济和金融中心，是一座散发着富裕、宏伟和创新气息的城市，从高耸的摩天大楼和繁华度假村到原始海滩和文化宝藏，这座城市总能给人留下深刻印象，现代奇迹与古老传统在这里交相辉映。 From Dimitri Fafutis",
+        description = "每当谈起迪拜，第一印象会是奢侈得流油，在经济繁荣的同时，迪拜也有它的另一副面孔。跟随创作者的镜头来到这座辉煌的「未来之城」迪拜，饱览一场城市与大自然的盛宴。迪拜是阿拉伯联合酋长国的瑰宝，也是中东地区的经济和金融中心，是一座散发着富裕、宏伟和创新气息的城市，从高耸的摩天大楼和繁华度假村到原始海滩和文化宝藏，这座城市总能给人留下深刻印象，现代奇迹与古老传统在这里交相辉映。 From Dimitri Flautist",
         consumption = VideoDetailReply.Consumption(
             collectionCount = 126,
             shareCount = 59,
@@ -560,8 +569,9 @@ private fun VideoInfo(
                 color = White,
                 fontSize = 15.sp,
                 duration = 1000,
-                fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_db1_gb_regular)
-                    ?.let { FontFamily(it) },
+                fontFamily = ResourcesCompat.getFont(
+                    context, R.font.fz_lan_ting_hei_s_db1_gb_regular
+                )?.let { FontFamily(it) },
                 modifier = Modifier.constrainAs(title) {
                     top.linkTo(parent.top, margin = 16.dp)
                     start.linkTo(parent.start, margin = 14.dp)
@@ -618,15 +628,15 @@ private fun VideoInfo(
                 Image(
                     painter = painterResource(id = R.drawable.ic_favorite_border_white_20dp),
                     contentDescription = null,
-                    modifier = Modifier
-                        .size(size = 20.dp),
+                    modifier = Modifier.size(size = 20.dp),
                 )
                 Text(
                     text = "${videoDetailReply?.consumption?.collectionCount ?: 0}",
                     color = White35,
                     fontSize = 13.sp,
-                    fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_l_gb_regular)
-                        ?.let { FontFamily(it) },
+                    fontFamily = ResourcesCompat.getFont(
+                        context, R.font.fz_lan_ting_hei_s_l_gb_regular
+                    )?.let { FontFamily(it) },
                     modifier = Modifier
                         .width(0.dp)
                         .weight(weight = 1f)
@@ -635,15 +645,15 @@ private fun VideoInfo(
                 Image(
                     painter = painterResource(id = R.drawable.ic_share_white_20dp),
                     contentDescription = null,
-                    modifier = Modifier
-                        .size(size = 20.dp),
+                    modifier = Modifier.size(size = 20.dp),
                 )
                 Text(
                     text = "${videoDetailReply?.consumption?.shareCount ?: 0}",
                     color = White35,
                     fontSize = 13.sp,
-                    fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_l_gb_regular)
-                        ?.let { FontFamily(it) },
+                    fontFamily = ResourcesCompat.getFont(
+                        context, R.font.fz_lan_ting_hei_s_l_gb_regular
+                    )?.let { FontFamily(it) },
                     modifier = Modifier
                         .width(0.dp)
                         .weight(weight = 1f)
@@ -652,15 +662,15 @@ private fun VideoInfo(
                 Image(
                     painter = painterResource(id = R.drawable.ic_cache_white_20dp),
                     contentDescription = null,
-                    modifier = Modifier
-                        .size(size = 20.dp),
+                    modifier = Modifier.size(size = 20.dp),
                 )
                 Text(
                     text = stringResource(R.string.cache),
                     color = White35,
                     fontSize = 13.sp,
-                    fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_l_gb_regular)
-                        ?.let { FontFamily(it) },
+                    fontFamily = ResourcesCompat.getFont(
+                        context, R.font.fz_lan_ting_hei_s_l_gb_regular
+                    )?.let { FontFamily(it) },
                     modifier = Modifier
                         .width(0.dp)
                         .weight(weight = 1f)
@@ -669,15 +679,15 @@ private fun VideoInfo(
                 Image(
                     painter = painterResource(id = R.drawable.ic_star_white_20dp),
                     contentDescription = null,
-                    modifier = Modifier
-                        .size(size = 20.dp),
+                    modifier = Modifier.size(size = 20.dp),
                 )
                 Text(
                     text = stringResource(R.string.collect),
                     color = White35,
                     fontSize = 13.sp,
-                    fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_l_gb_regular)
-                        ?.let { FontFamily(it) },
+                    fontFamily = ResourcesCompat.getFont(
+                        context, R.font.fz_lan_ting_hei_s_l_gb_regular
+                    )?.let { FontFamily(it) },
                     modifier = Modifier
                         .width(0.dp)
                         .weight(weight = 1f)
@@ -689,13 +699,12 @@ private fun VideoInfo(
             visible = videoDetailReply?.author != null,
             enter = fadeIn(animationSpec = snap()),
             exit = fadeOut(animationSpec = snap()),
-            modifier = Modifier
-                .constrainAs(author) {
-                    top.linkTo(videoInfo.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    width = Dimension.fillToConstraints
-                },
+            modifier = Modifier.constrainAs(author) {
+                top.linkTo(videoInfo.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                width = Dimension.fillToConstraints
+            },
         ) {
             ConstraintLayout(
                 modifier = Modifier
@@ -708,6 +717,10 @@ private fun VideoInfo(
                     model = ImageRequest.Builder(context)
                         .data(data = videoDetailReply?.author?.icon)
                         .transformations(CircleCropTransformation())
+                        .placeholder(GradientDrawable().apply {
+                            shape = GradientDrawable.OVAL
+                            setColor(Gray20.toArgb())
+                        })
                         .error(R.drawable.ic_avatar_gray_76dp)
                         .crossfade(true)
                         .build(),
@@ -739,38 +752,38 @@ private fun VideoInfo(
                     text = videoDetailReply?.author?.name.orEmpty(),
                     color = White,
                     fontSize = 14.sp,
-                    fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_db1_gb_regular)
-                        ?.let { FontFamily(it) },
+                    fontFamily = ResourcesCompat.getFont(
+                        context, R.font.fz_lan_ting_hei_s_db1_gb_regular
+                    )?.let { FontFamily(it) },
                     textAlign = TextAlign.Start,
                     overflow = TextOverflow.Ellipsis,
                     softWrap = false,
                     maxLines = 1,
-                    modifier = Modifier
-                        .constrainAs(name) {
-                            top.linkTo(avatar.top, margin = 2.dp)
-                            start.linkTo(avatar.end, margin = 12.dp)
-                            end.linkTo(description.end)
-                            width = Dimension.fillToConstraints
-                        },
+                    modifier = Modifier.constrainAs(name) {
+                        top.linkTo(avatar.top, margin = 2.dp)
+                        start.linkTo(avatar.end, margin = 12.dp)
+                        end.linkTo(description.end)
+                        width = Dimension.fillToConstraints
+                    },
                 )
                 // 作者描述
                 Text(
                     text = videoDetailReply?.author?.description.orEmpty(),
                     color = White35,
                     fontSize = 13.sp,
-                    fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_l_gb_regular)
-                        ?.let { FontFamily(it) },
+                    fontFamily = ResourcesCompat.getFont(
+                        context, R.font.fz_lan_ting_hei_s_l_gb_regular
+                    )?.let { FontFamily(it) },
                     textAlign = TextAlign.Start,
                     overflow = TextOverflow.Ellipsis,
                     softWrap = false,
                     maxLines = 1,
-                    modifier = Modifier
-                        .constrainAs(description) {
-                            top.linkTo(name.bottom, margin = 2.dp)
-                            start.linkTo(name.start)
-                            end.linkTo(follow.start, margin = 14.dp)
-                            width = Dimension.fillToConstraints
-                        },
+                    modifier = Modifier.constrainAs(description) {
+                        top.linkTo(name.bottom, margin = 2.dp)
+                        start.linkTo(name.start)
+                        end.linkTo(follow.start, margin = 14.dp)
+                        width = Dimension.fillToConstraints
+                    },
                 )
                 // 关注
                 Box(
@@ -794,17 +807,15 @@ private fun VideoInfo(
                         color = White,
                         fontSize = 10.sp,
                         fontFamily = ResourcesCompat.getFont(
-                            context,
-                            R.font.fz_lan_ting_hei_s_db1_gb_regular
+                            context, R.font.fz_lan_ting_hei_s_db1_gb_regular
                         )?.let { FontFamily(it) },
                     )
                 }
                 // 分割线
                 Divider(
-                    modifier = Modifier
-                        .constrainAs(divider) {
-                            top.linkTo(avatar.bottom, margin = 15.dp)
-                        },
+                    modifier = Modifier.constrainAs(divider) {
+                        top.linkTo(avatar.bottom, margin = 15.dp)
+                    },
                     color = White85,
                     thickness = 0.2.dp,
                 )
@@ -818,7 +829,9 @@ fun VideoCommentsItem(item: VideoCommentsReply.Item) {
     when {
         item.type == "textCard" && item.data?.type == "header4" -> TextCardHeader4(item = item)
 
-        item.type == "reply" && item.data?.dataType == "ReplyBeanForClient" -> ReplyBeanForClient(item = item)
+        item.type == "reply" && item.data?.dataType == "ReplyBeanForClient" -> ReplyBeanForClient(
+            item = item
+        )
     }
 }
 
@@ -903,6 +916,10 @@ fun ReplyBeanForClient(
             model = ImageRequest.Builder(context)
                 .data(data = item.data?.user?.avatar)
                 .transformations(CircleCropTransformation())
+                .placeholder(GradientDrawable().apply {
+                    shape = GradientDrawable.OVAL
+                    setColor(Gray20.toArgb())
+                })
                 .error(R.drawable.ic_avatar_gray_76dp)
                 .crossfade(true)
                 .build(),
@@ -930,8 +947,9 @@ fun ReplyBeanForClient(
                     text = item.data?.user?.nickname.orEmpty(),
                     color = White,
                     fontSize = 13.sp,
-                    fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_db1_gb_regular)
-                        ?.let { FontFamily(it) },
+                    fontFamily = ResourcesCompat.getFont(
+                        context, R.font.fz_lan_ting_hei_s_db1_gb_regular
+                    )?.let { FontFamily(it) },
                     textAlign = TextAlign.Start,
                     overflow = TextOverflow.Ellipsis,
                     softWrap = false,
@@ -951,8 +969,9 @@ fun ReplyBeanForClient(
                         text = "${item.data?.likeCount ?: 0}",
                         color = White,
                         fontSize = 13.sp,
-                        fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_l_gb_regular)
-                            ?.let { FontFamily(it) },
+                        fontFamily = ResourcesCompat.getFont(
+                            context, R.font.fz_lan_ting_hei_s_l_gb_regular
+                        )?.let { FontFamily(it) },
                         textAlign = TextAlign.Start,
                         overflow = TextOverflow.Ellipsis,
                         softWrap = false,
@@ -983,8 +1002,9 @@ fun ReplyBeanForClient(
                     ),
                     color = White35,
                     fontSize = 12.sp,
-                    fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_l_gb_regular)
-                        ?.let { FontFamily(it) },
+                    fontFamily = ResourcesCompat.getFont(
+                        context, R.font.fz_lan_ting_hei_s_l_gb_regular
+                    )?.let { FontFamily(it) },
                 )
             }
             // 消息
@@ -1022,6 +1042,10 @@ fun ReplyBeanForClient(
                         model = ImageRequest.Builder(context)
                             .data(data = item.data?.parentReply?.user?.avatar)
                             .transformations(CircleCropTransformation())
+                            .placeholder(GradientDrawable().apply {
+                                shape = GradientDrawable.OVAL
+                                setColor(Gray20.toArgb())
+                            })
                             .error(R.drawable.ic_avatar_gray_76dp)
                             .crossfade(true)
                             .build(),
@@ -1040,27 +1064,28 @@ fun ReplyBeanForClient(
                         text = item.data?.parentReply?.user?.nickname.orEmpty(),
                         color = White10,
                         fontSize = 13.sp,
-                        fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_db1_gb_regular)
-                            ?.let { FontFamily(it) },
+                        fontFamily = ResourcesCompat.getFont(
+                            context, R.font.fz_lan_ting_hei_s_db1_gb_regular
+                        )?.let { FontFamily(it) },
                         textAlign = TextAlign.Start,
                         overflow = TextOverflow.Ellipsis,
                         softWrap = false,
                         maxLines = 1,
-                        modifier = Modifier
-                            .constrainAs(replyNickname) {
-                                top.linkTo(replyAvatar.top, margin = 2.dp)
-                                start.linkTo(replyAvatar.end, margin = 12.dp)
-                                end.linkTo(parent.end)
-                                width = Dimension.fillToConstraints
-                            },
+                        modifier = Modifier.constrainAs(replyNickname) {
+                            top.linkTo(replyAvatar.top, margin = 2.dp)
+                            start.linkTo(replyAvatar.end, margin = 12.dp)
+                            end.linkTo(parent.end)
+                            width = Dimension.fillToConstraints
+                        },
                     )
                     // 回复消息
                     Text(
                         text = item.data?.parentReply?.message.orEmpty(),
                         color = White25,
                         fontSize = 12.sp,
-                        fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_l_gb_regular)
-                            ?.let { FontFamily(it) },
+                        fontFamily = ResourcesCompat.getFont(
+                            context, R.font.fz_lan_ting_hei_s_l_gb_regular
+                        )?.let { FontFamily(it) },
                         modifier = Modifier.constrainAs(replyMessage) {
                             top.linkTo(replyNickname.bottom, margin = 12.dp)
                             start.linkTo(replyNickname.start)
@@ -1088,8 +1113,9 @@ fun ReplyBeanForClient(
                         text = stringResource(R.string.view_conversation),
                         color = White25,
                         fontSize = 12.sp,
-                        fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_db1_gb_regular)
-                            ?.let { FontFamily(it) },
+                        fontFamily = ResourcesCompat.getFont(
+                            context, R.font.fz_lan_ting_hei_s_db1_gb_regular
+                        )?.let { FontFamily(it) },
                     )
                 }
                 // 回复
@@ -1097,16 +1123,18 @@ fun ReplyBeanForClient(
                     text = stringResource(R.string.reply),
                     color = White25,
                     fontSize = 12.sp,
-                    fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_db1_gb_regular)
-                        ?.let { FontFamily(it) },
+                    fontFamily = ResourcesCompat.getFont(
+                        context, R.font.fz_lan_ting_hei_s_db1_gb_regular
+                    )?.let { FontFamily(it) },
                 )
                 // 时间
                 Text(
                     text = item.data?.createTime?.toReplyTimeString().orEmpty(),
                     color = White20,
                     fontSize = 12.sp,
-                    fontFamily = ResourcesCompat.getFont(context, R.font.fz_lan_ting_hei_s_l_gb_regular)
-                        ?.let { FontFamily(it) },
+                    fontFamily = ResourcesCompat.getFont(
+                        context, R.font.fz_lan_ting_hei_s_l_gb_regular
+                    )?.let { FontFamily(it) },
                     modifier = Modifier.padding(start = 20.dp),
                 )
                 Spacer(
@@ -1118,8 +1146,7 @@ fun ReplyBeanForClient(
                 Image(
                     painter = painterResource(id = R.drawable.ic_more_horizontal_white_24dp),
                     contentDescription = null,
-                    modifier = Modifier
-                        .size(24.dp),
+                    modifier = Modifier.size(24.dp),
                 )
             }
 
@@ -1192,8 +1219,7 @@ fun BottomCommentUi(
             Image(
                 painter = painterResource(id = R.drawable.ic_reply_white_20dp),
                 contentDescription = null,
-                modifier = Modifier
-                    .size(size = 20.dp),
+                modifier = Modifier.size(size = 20.dp),
             )
             Text(
                 text = replyCount.toString(),

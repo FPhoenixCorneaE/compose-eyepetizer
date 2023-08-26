@@ -421,6 +421,10 @@ fun CommunityFollowCard(
             model = ImageRequest.Builder(context)
                 .data(data = item.data?.content?.data?.owner?.avatar)
                 .transformations(CircleCropTransformation())
+                .placeholder(GradientDrawable().apply {
+                    shape = GradientDrawable.OVAL
+                    setColor(Gray20.toArgb())
+                })
                 .error(R.drawable.ic_avatar_gray_76dp)
                 .crossfade(true)
                 .build(),
