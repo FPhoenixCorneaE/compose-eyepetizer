@@ -32,7 +32,6 @@ import com.fphoenixcorneae.eyepetizer.R
 import com.fphoenixcorneae.eyepetizer.const.Constant
 import com.fphoenixcorneae.eyepetizer.ext.clickableNoRipple
 import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavHostController
-import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavRoute
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.GrayDark
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.LocalThemeColors
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.SystemUiScaffold

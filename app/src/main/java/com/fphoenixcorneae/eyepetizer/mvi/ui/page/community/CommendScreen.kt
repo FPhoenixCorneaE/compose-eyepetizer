@@ -28,6 +28,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -54,8 +56,12 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
+import com.fphoenixcorneae.compose.ext.toJson
 import com.fphoenixcorneae.eyepetizer.R
+import com.fphoenixcorneae.eyepetizer.const.Constant
+import com.fphoenixcorneae.eyepetizer.ext.clickableNoRipple
 import com.fphoenixcorneae.eyepetizer.mvi.model.CommunityReply
+import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavHostController
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Black55
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Black70
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Black80
@@ -68,6 +74,9 @@ import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.White80
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.BannerViewPager
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.SwipeRefreshStaggeredGrid
 import com.fphoenixcorneae.eyepetizer.mvi.viewmodel.CommunityViewModel
+import com.tencent.mmkv.MMKV
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * @desc：社区-推荐
@@ -76,8 +85,15 @@ import com.fphoenixcorneae.eyepetizer.mvi.viewmodel.CommunityViewModel
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CommendScreen() {
+    val coroutineScope = rememberCoroutineScope()
     val viewModel = viewModel<CommunityViewModel>()
     val communityCommends = viewModel.communityCommends.collectAsLazyPagingItems()
+    LaunchedEffect(key1 = communityCommends) {
+        coroutineScope.launch(Dispatchers.IO) {
+            MMKV.defaultMMKV()
+                .encode(Constant.Key.COMMUNITY_COMMEND_LIST, communityCommends.itemSnapshotList.items.toJson())
+        }
+    }
     SwipeRefreshStaggeredGrid(
         lazyPagingItems = communityCommends,
         modifier = Modifier.fillMaxSize(),
@@ -125,7 +141,7 @@ fun CommunityHorizontalScrollCard(
         data = CommunityReply.Item.Data(
             itemList = buildList {
                 repeat(4) {
-                    CommunityReply.Item.Data.Item()
+                    add(CommunityReply.Item.Data.Item())
                 }
             },
             label = CommunityReply.Item.Data.Item.Data.Label(
@@ -199,10 +215,12 @@ fun CommunityHorizontalScrollCardItemCollection(
         data = CommunityReply.Item.Data(
             itemList = buildList {
                 repeat(4) {
-                    CommunityReply.Item.Data.Item(
-                        data = CommunityReply.Item.Data.Item.Data(
-                            title = "主题创作广场",
-                            subTitle = "发布你的作品和日常",
+                    add(
+                        CommunityReply.Item.Data.Item(
+                            data = CommunityReply.Item.Data.Item.Data(
+                                title = "主题创作广场",
+                                subTitle = "发布你的作品和日常",
+                            )
                         )
                     )
                 }
@@ -308,7 +326,10 @@ fun CommunityFollowCard(
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight(),
+            .wrapContentHeight()
+            .clickableNoRipple {
+                NavHostController.navToUgcDetail(id = item.id)
+            },
     ) {
         val (cover, description, choiceness, layers, play, avatar, nickname, collectionCount) = createRefs()
         // 封面图片

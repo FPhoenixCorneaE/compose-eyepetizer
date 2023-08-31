@@ -15,6 +15,8 @@ object Constant {
     object Key {
         const val VIDEO_ID = "video_id"
         const val WEB_URL = "web_url"
+        const val ID = "id"
+        const val COMMUNITY_COMMEND_LIST = "community_commend_list"
     }
 
     /**
@@ -47,6 +49,7 @@ object Constant {
         const val DAILY = "daily"
         const val VIDEO_DETAIL = "video_detail"
         const val FOLLOW = "follow"
+        const val UGC_DETAIL = "ugc_detail"
     }
 
     /**

@@ -144,6 +144,9 @@ dependencies {
     // Compose版SmartRefreshLayout: https://github.com/RicardoJiang/compose-refreshlayout
     implementation("io.github.shenzhen2017:compose-refreshlayout:1.0.0")
 
+    // 高效键值存储框架
+    implementation("com.tencent:mmkv:1.3.1")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

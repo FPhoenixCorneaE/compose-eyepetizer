@@ -61,7 +61,6 @@ import com.fphoenixcorneae.eyepetizer.ext.clickableNoRipple
 import com.fphoenixcorneae.eyepetizer.ext.toVideoDuration
 import com.fphoenixcorneae.eyepetizer.mvi.model.CommunityReply
 import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavHostController
-import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavRoute
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Black20
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Blue
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Gray
@@ -467,7 +466,7 @@ fun AutoPlayFollowCard(
                 Image(
                     painter = painterResource(id = R.drawable.ic_share_gray_20dp),
                     contentDescription = null,
-                    modifier = Modifier.size(size = 24.dp),
+                    modifier = Modifier.size(size = 28.dp),
                     colorFilter = ColorFilter.tint(color = LocalThemeColors.current.textColorTertiary),
                 )
             }

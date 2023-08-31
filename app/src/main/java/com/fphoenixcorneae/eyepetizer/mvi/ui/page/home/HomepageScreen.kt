@@ -3,10 +3,12 @@ package com.fphoenixcorneae.eyepetizer.mvi.ui.page.home
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,8 +38,13 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun HomepageScreen() {
-    SystemUiScaffold(statusBarColor = LocalThemeColors.current.colorPrimary) {
-        Column(modifier = Modifier.fillMaxSize()) {
+    SystemUiScaffold(statusBarsPadding = false) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = LocalThemeColors.current.colorPrimary)
+                .statusBarsPadding(),
+        ) {
             val context = LocalContext.current
             val animatedNavController = rememberAnimatedNavController()
             var selectedTabIndex by remember { mutableStateOf(1) }

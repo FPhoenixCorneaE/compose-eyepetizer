@@ -20,6 +20,6 @@ object EyepetizerApi {
     // 通知
     const val NOTIFICATION_PUSH_MESSAGE = "${BASE_URL}api/v3/messages"
 
-    // 视频详情
+    // 视频详情-评论列表
     const val VIDEO_DETAIL_COMMENTS = "${BASE_URL}api/v2/replies/video?videoId="
 }

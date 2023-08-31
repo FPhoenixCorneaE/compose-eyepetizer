@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.fphoenixcorneae.eyepetizer.const.Constant
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.MainScreen
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.SplashScreen
+import com.fphoenixcorneae.eyepetizer.mvi.ui.page.detail.UgcDetailScreen
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.detail.VideoDetailScreen
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.login.LoginScreen
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.search.SearchScreen
@@ -90,6 +91,22 @@ fun EyepetizerScreen() {
             popExitTransition = { slideOutVertically(targetOffsetY = { -it }) + fadeOut() },
         ) {
             SearchScreen()
+        }
+        composable(
+            route = "${NavRoute.UGC_DETAIL}?${Constant.Key.ID}={${Constant.Key.ID}}",
+            arguments = listOf(
+                navArgument(Constant.Key.ID) {
+                    type = NavType.IntType
+                },
+            ),
+            enterTransition = { slideInVertically(initialOffsetY = { it }) + fadeIn() },
+            exitTransition = { slideOutVertically(targetOffsetY = { it }) + fadeOut() },
+            popEnterTransition = { slideInVertically(initialOffsetY = { it }) + fadeIn() },
+            popExitTransition = { slideOutVertically(targetOffsetY = { it }) + fadeOut() },
+        ) { backStackEntry ->
+            UgcDetailScreen(
+                id = backStackEntry.arguments?.getInt(Constant.Key.ID) ?: 0,
+            )
         }
     }
 }

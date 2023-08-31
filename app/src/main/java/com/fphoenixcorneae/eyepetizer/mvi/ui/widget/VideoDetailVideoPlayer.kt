@@ -9,10 +9,10 @@ import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoView
 
 /**
- * @desc：详情播放器
+ * @desc：首页详情播放器
  * @date：2023/08/16 17:14
  */
-class DetailVideoPlayer : StandardGSYVideoPlayer {
+class VideoDetailVideoPlayer : StandardGSYVideoPlayer {
 
     /** 是否第一次初始加载视频。用于隐藏进度条、播放按钮等UI。播放完成/重新加载视频，会重置为true。 */
     private var isFirstInitLoaded = false

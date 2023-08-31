@@ -455,7 +455,7 @@ private fun HorizontalScrollCard(
         data = HomepageReply.Item.Data(
             itemList = buildList {
                 repeat(4) {
-                    HomepageReply.Item.Data.Item()
+                    add(HomepageReply.Item.Data.Item())
                 }
             },
             label = HomepageReply.Item.Data.Item.Data.Label(
@@ -538,12 +538,14 @@ private fun SpecialSquareCardCollection(
             ),
             itemList = buildList {
                 repeat(16) {
-                    HomepageReply.Item.Data.Item(
-                        data = HomepageReply.Item.Data.Item.Data(
-                            title = "#广告",
-                            dataType = "SquareCard",
-                        ),
-                        type = "squareCardOfCategory",
+                    add(
+                        HomepageReply.Item.Data.Item(
+                            data = HomepageReply.Item.Data.Item.Data(
+                                title = "#广告",
+                                dataType = "SquareCard",
+                            ),
+                            type = "squareCardOfCategory",
+                        )
                     )
                 }
             },
@@ -599,9 +601,12 @@ private fun SpecialSquareCardCollection(
         LazyHorizontalGrid(
             rows = GridCells.Adaptive(minSize = 108.dp),
             modifier = Modifier
-                .fillMaxSize()
                 .padding(top = 53.dp, bottom = 12.dp)
-                .constrainAs(categories) {},
+                .fillMaxSize()
+                .constrainAs(categories) {
+                    start.linkTo(parent.start)
+                    top.linkTo(parent.top)
+                },
             contentPadding = PaddingValues(horizontal = 14.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -663,12 +668,14 @@ private fun ColumnCardList(
             ),
             itemList = buildList {
                 repeat(4) {
-                    HomepageReply.Item.Data.Item(
-                        data = HomepageReply.Item.Data.Item.Data(
-                            title = "爱，在与你相遇的每一个瞬间",
-                            dataType = "SquareCard",
-                        ),
-                        type = "squareCardOfColumn",
+                    add(
+                        HomepageReply.Item.Data.Item(
+                            data = HomepageReply.Item.Data.Item.Data(
+                                title = "爱，在与你相遇的每一个瞬间",
+                                dataType = "SquareCard",
+                            ),
+                            type = "squareCardOfColumn",
+                        )
                     )
                 }
             },
@@ -1492,7 +1499,8 @@ private fun InformationCard(
                     )
                 ).placeholder(GradientDrawable().apply {
                     setColor(Gray20.toArgb())
-                    cornerRadii = floatArrayOf(LocalDensity.current.run { 4.dp.toPx() },
+                    cornerRadii = floatArrayOf(
+                        LocalDensity.current.run { 4.dp.toPx() },
                         LocalDensity.current.run { 4.dp.toPx() },
                         LocalDensity.current.run { 4.dp.toPx() },
                         LocalDensity.current.run { 4.dp.toPx() },

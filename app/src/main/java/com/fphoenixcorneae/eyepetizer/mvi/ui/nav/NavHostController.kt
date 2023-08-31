@@ -18,11 +18,11 @@ object NavHostController {
     fun get() = navHostController.get()!!
 
     fun navToMain() {
-        get().navigate(NavRoute.MAIN)
+        get().navigate(route = NavRoute.MAIN)
     }
 
     fun navToLogin() {
-        get().navigate(NavRoute.LOGIN)
+        get().navigate(route = NavRoute.LOGIN)
     }
 
     fun navToVideoDetail(videoId: String?) {
@@ -35,6 +35,10 @@ object NavHostController {
     }
 
     fun navToWeb(url: String?) {
-        get().navigate("${NavRoute.WEB}?${Constant.Key.WEB_URL}=${url}")
+        get().navigate(route = "${NavRoute.WEB}?${Constant.Key.WEB_URL}=${url}")
+    }
+
+    fun navToUgcDetail(id: Int) {
+        get().navigate(route = "${NavRoute.UGC_DETAIL}?${Constant.Key.ID}=${id}")
     }
 }

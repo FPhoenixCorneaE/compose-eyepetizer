@@ -2,6 +2,7 @@ package com.fphoenixcorneae.eyepetizer.mvi.ui.page.notification
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -42,8 +44,13 @@ import kotlinx.coroutines.launch
 @Preview
 @Composable
 fun NotificationScreen() {
-    SystemUiScaffold(statusBarColor = LocalThemeColors.current.colorPrimary) {
-        Column(modifier = Modifier.fillMaxSize()) {
+    SystemUiScaffold(statusBarsPadding = false) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = LocalThemeColors.current.colorPrimary)
+                .statusBarsPadding(),
+        ) {
             val context = LocalContext.current
             val pagerState = rememberPagerState(initialPage = 0)
             val coroutineScope = rememberCoroutineScope()

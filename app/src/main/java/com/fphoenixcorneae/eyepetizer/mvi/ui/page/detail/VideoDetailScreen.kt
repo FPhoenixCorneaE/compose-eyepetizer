@@ -4,7 +4,6 @@ import android.graphics.drawable.GradientDrawable
 import android.widget.ImageView
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -22,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
@@ -95,9 +95,9 @@ import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.White25
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.White35
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.White80
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.White85
-import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.DetailVideoPlayer
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.SystemUiScaffold
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.TypewriterText
+import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.VideoDetailVideoPlayer
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.lazyColumnFooter
 import com.fphoenixcorneae.eyepetizer.mvi.viewmodel.VideoDetailAction
 import com.fphoenixcorneae.eyepetizer.mvi.viewmodel.VideoDetailViewModel
@@ -127,16 +127,10 @@ fun VideoDetailScreen(
     val coroutineScope = rememberCoroutineScope()
     val density = LocalDensity.current
     var initial by remember { mutableStateOf(false) }
-    val viewModel: VideoDetailViewModel =
-        viewModel(factory = VideoDetailViewModelFactory(videoId = videoId))
+    val viewModel = viewModel<VideoDetailViewModel>(factory = VideoDetailViewModelFactory(videoId = videoId))
     val videoDetailUiState by viewModel.videoDetailUiState.collectAsState()
     val videoComments = viewModel.videoComments.collectAsLazyPagingItems()
-    val statusBarColor by animateColorAsState(
-        targetValue = if (initial) Black else Color.Transparent,
-        animationSpec = tween(durationMillis = 600),
-        label = "状态栏颜色渐变动画",
-    )
-    var videoPlayer by remember { mutableStateOf<DetailVideoPlayer?>(null) }
+    var videoPlayer by remember { mutableStateOf<VideoDetailVideoPlayer?>(null) }
     var orientationUtils: OrientationUtils? = null
     var delayHideBackJob: Job? = null
     var delayHideBottomJob: Job? = null
@@ -188,7 +182,7 @@ fun VideoDetailScreen(
         // 开始播放
         videoPlayer?.startPlayLogic()
     }
-    SystemUiScaffold(statusBarColor = statusBarColor, isDarkFont = false) {
+    SystemUiScaffold(statusBarsPadding = false, isDarkFont = false) {
         AsyncImage(
             model = ImageRequest.Builder(context)
                 .data(data = videoDetailUiState.videoDetailReply?.cover?.blurred)
@@ -199,28 +193,33 @@ fun VideoDetailScreen(
         )
         Column(
             modifier = Modifier
+                .statusBarsPadding()
                 .fillMaxSize()
                 .background(color = Black50)
         ) {
-            DisposableLifecycleEffect(onPause = {
-                videoPlayer?.onVideoPause()
-            }, onResume = {
-                videoPlayer?.onVideoResume()
-                videoPlayer?.onConfigurationChanged(
-                    /* activity = */ context.getActivity(),
-                    /* newConfig = */ configuration,
-                    /* orientationUtils = */ orientationUtils,
-                    /* hideActionBar = */ true,
-                    /* hideStatusBar = */ true,
-                )
-            }, onDestroy = {
-                GSYVideoManager.releaseAllVideos()
-                orientationUtils?.releaseListener()
-                orientationUtils = null
-                videoPlayer?.release()
-                videoPlayer?.setVideoAllCallBack(null)
-                videoPlayer = null
-            }) {
+            DisposableLifecycleEffect(
+                onPause = {
+                    videoPlayer?.onVideoPause()
+                },
+                onResume = {
+                    videoPlayer?.onVideoResume()
+                    videoPlayer?.onConfigurationChanged(
+                        /* activity = */ context.getActivity(),
+                        /* newConfig = */ configuration,
+                        /* orientationUtils = */ orientationUtils,
+                        /* hideActionBar = */ true,
+                        /* hideStatusBar = */ true,
+                    )
+                },
+                onDestroy = {
+                    GSYVideoManager.releaseAllVideos()
+                    orientationUtils?.releaseListener()
+                    orientationUtils = null
+                    videoPlayer?.release()
+                    videoPlayer?.setVideoAllCallBack(null)
+                    videoPlayer = null
+                },
+            ) {
                 initial = true
             }
             // 播放器
@@ -231,7 +230,7 @@ fun VideoDetailScreen(
             ) {
                 AndroidView(
                     factory = {
-                        DetailVideoPlayer(context).apply {
+                        VideoDetailVideoPlayer(context).apply {
                             // 设置全屏按键功能，这是使用的是选择屏幕，而不是全屏
                             fullscreenButton.setOnClickListener {
                                 orientationUtils?.resolveByClick()
@@ -269,15 +268,11 @@ fun VideoDetailScreen(
                                     if (videoPlayer?.currentPlayer?.currentState != GSYVideoView.CURRENT_STATE_AUTO_COMPLETE) {
                                         delayHideBackJob?.cancel()
                                         if (!visibleBack) {
-                                            delayHideBackJob =
-                                                coroutineScope.launch(Dispatchers.Main) {
-                                                    delay(
-                                                        videoPlayer?.dismissControlTime?.toLong()
-                                                            ?: 3000
-                                                    )
-                                                    visibleBack = false
-                                                    visibleCollect = false
-                                                }
+                                            delayHideBackJob = coroutineScope.launch(Dispatchers.Main) {
+                                                delay(videoPlayer?.dismissControlTime?.toLong() ?: 3000)
+                                                visibleBack = false
+                                                visibleCollect = false
+                                            }
                                         }
                                         visibleBack = !visibleBack
                                         visibleCollect = !visibleCollect

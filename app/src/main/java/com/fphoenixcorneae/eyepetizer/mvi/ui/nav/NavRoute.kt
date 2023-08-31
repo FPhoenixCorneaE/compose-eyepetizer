@@ -11,6 +11,7 @@ object NavRoute {
     const val VIDEO_DETAIL = "video_detail"
     const val WEB = "web"
     const val SEARCH = "search"
+    const val UGC_DETAIL = "ugc_detail"
 
     /**
      * @desc：主页
