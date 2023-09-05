@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -31,6 +32,8 @@ import androidx.core.content.res.ResourcesCompat
 import com.fphoenixcorneae.eyepetizer.R
 import com.fphoenixcorneae.eyepetizer.const.Constant
 import com.fphoenixcorneae.eyepetizer.ext.clickableNoRipple
+import com.fphoenixcorneae.eyepetizer.ext.overScrollVertical
+import com.fphoenixcorneae.eyepetizer.ext.rememberOverscrollFlingBehavior
 import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavHostController
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.GrayDark
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.LocalThemeColors
@@ -45,8 +48,13 @@ import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.VerticalDivider
 @Composable
 fun MineScreen() {
     val context = LocalContext.current
+    val lazyListState = rememberLazyListState()
     SystemUiScaffold {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .overScrollVertical(),
+        ) {
             // 更多
             Image(
                 painter = painterResource(id = R.drawable.ic_more_white_20dp),
@@ -136,9 +144,11 @@ fun MineScreen() {
             Divider(thickness = 0.2.dp, color = GrayDark, modifier = Modifier.padding(top = 18.dp))
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .overScrollVertical(),
                 contentPadding = PaddingValues(top = 14.dp, bottom = 28.dp),
                 verticalArrangement = Arrangement.spacedBy(space = 14.dp),
+                flingBehavior = rememberOverscrollFlingBehavior { lazyListState },
             ) {
                 item {
                     MineItem(text = stringResource(R.string.my_follow)) {}

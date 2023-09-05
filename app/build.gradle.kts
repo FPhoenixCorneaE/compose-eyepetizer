@@ -83,9 +83,11 @@ android.applicationVariants.all {
 dependencies {
     implementation(project(mapOf("path" to ":compose-mvi")))
     implementation("com.github.FPhoenixCorneaE:Common:2.1.0")
+
     // kotlin
     val kotlinBom = platform("org.jetbrains.kotlin:kotlin-bom:1.8.0")
     implementation(kotlinBom)
+
     // compose
     val composeBom = platform("androidx.compose:compose-bom:2023.01.00")
     implementation(composeBom)
@@ -100,11 +102,14 @@ dependencies {
 
     // constraintlayout
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
     // datastore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+
     // paging
     implementation("androidx.paging:paging-runtime-ktx:3.2.0")
     implementation("androidx.paging:paging-compose:3.2.0")
+
     // startup
     implementation("androidx.startup:startup-runtime:1.1.1")
 
