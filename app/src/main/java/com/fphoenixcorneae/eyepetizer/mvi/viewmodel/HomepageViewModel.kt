@@ -5,6 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.fphoenixcorneae.compose.mvi.BaseViewModel
+import com.fphoenixcorneae.compose.mvi.DefaultAction
 import com.fphoenixcorneae.eyepetizer.https.EyepetizerApi
 import com.fphoenixcorneae.eyepetizer.paging.HomepageCommendPagingSource
 import com.fphoenixcorneae.eyepetizer.paging.HomepageDailyPagingSource
@@ -14,7 +15,7 @@ import com.fphoenixcorneae.eyepetizer.paging.HomepageDiscoveryPagingSource
  * @desc：
  * @date：2023/08/10 09:27
  */
-class HomepageViewModel : BaseViewModel<HomepageAction>() {
+class HomepageViewModel : BaseViewModel<DefaultAction>() {
 
     /** 首页发现列表 */
     val homepageDiscoveries = Pager(config = PagingConfig(pageSize = EyepetizerApi.PAGE_SIZE)) {
@@ -31,12 +32,6 @@ class HomepageViewModel : BaseViewModel<HomepageAction>() {
         HomepageDailyPagingSource()
     }.flow.cachedIn(viewModelScope)
 
-    override fun processIntent(action: HomepageAction) {
+    override fun processIntent(action: DefaultAction) {
     }
 }
-
-/**
- * @desc：
- * @date：2023/08/10 09:29
- */
-sealed interface HomepageAction

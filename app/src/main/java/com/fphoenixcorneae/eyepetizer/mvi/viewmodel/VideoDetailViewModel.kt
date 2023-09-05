@@ -8,6 +8,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.fphoenixcorneae.compose.ext.launchDefault
 import com.fphoenixcorneae.compose.mvi.BaseViewModel
+import com.fphoenixcorneae.compose.mvi.DefaultAction
 import com.fphoenixcorneae.eyepetizer.https.EyepetizerApi
 import com.fphoenixcorneae.eyepetizer.https.videoService
 import com.fphoenixcorneae.eyepetizer.mvi.model.HomepageReply
@@ -36,7 +37,7 @@ class VideoDetailViewModelFactory(private val videoId: String) : ViewModelProvid
  */
 class VideoDetailViewModel(
     private var videoId: String,
-) : BaseViewModel<VideoDetailAction>() {
+) : BaseViewModel<DefaultAction>() {
 
     /** 评论列表 */
     val videoComments = Pager(config = PagingConfig(pageSize = EyepetizerApi.PAGE_SIZE)) {
@@ -55,9 +56,9 @@ class VideoDetailViewModel(
         }
     }
 
-    override fun processIntent(action: VideoDetailAction) {
+    override fun processIntent(action: DefaultAction) {
         when (action) {
-            VideoDetailAction.Initial -> {
+            DefaultAction.Initialize -> {
                 sendHttpRequest(
                     call = {
                         videoService.getVideoDetail(videoId = videoId)
@@ -91,11 +92,3 @@ data class VideoDetailUiState(
     val videoDetailReply: VideoDetailReply? = null,
     val videoRelatedReply: HomepageReply? = null,
 )
-
-/**
- * @desc：
- * @date：2023/08/17 16:47
- */
-sealed interface VideoDetailAction {
-    object Initial : VideoDetailAction
-}

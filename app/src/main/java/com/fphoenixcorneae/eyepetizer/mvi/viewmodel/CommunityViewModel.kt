@@ -5,6 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.fphoenixcorneae.compose.mvi.BaseViewModel
+import com.fphoenixcorneae.compose.mvi.DefaultAction
 import com.fphoenixcorneae.eyepetizer.https.EyepetizerApi
 import com.fphoenixcorneae.eyepetizer.paging.CommunityCommendPagingSource
 import com.fphoenixcorneae.eyepetizer.paging.CommunityFollowPagingSource
@@ -13,7 +14,7 @@ import com.fphoenixcorneae.eyepetizer.paging.CommunityFollowPagingSource
  * @desc：
  * @date：2023/08/23 14:23
  */
-class CommunityViewModel : BaseViewModel<CommunityAction>() {
+class CommunityViewModel : BaseViewModel<DefaultAction>() {
 
     /** 社区推荐列表 */
     val communityCommends = Pager(config = PagingConfig(pageSize = EyepetizerApi.PAGE_SIZE)) {
@@ -25,12 +26,6 @@ class CommunityViewModel : BaseViewModel<CommunityAction>() {
         CommunityFollowPagingSource()
     }.flow.cachedIn(viewModelScope)
 
-    override fun processIntent(action: CommunityAction) {
+    override fun processIntent(action: DefaultAction) {
     }
 }
-
-/**
- * @desc：
- * @date：2023/08/23 14:23
- */
-sealed interface CommunityAction

@@ -58,11 +58,13 @@ import coil.compose.AsyncImage
 import coil.load
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
+import com.fphoenixcorneae.compose.mvi.DefaultAction
 import com.fphoenixcorneae.eyepetizer.R
 import com.fphoenixcorneae.eyepetizer.const.Constant
 import com.fphoenixcorneae.eyepetizer.ext.DisposableLifecycleEffect
 import com.fphoenixcorneae.eyepetizer.ext.clickableNoRipple
 import com.fphoenixcorneae.eyepetizer.mvi.model.CommunityReply
+import com.fphoenixcorneae.eyepetizer.mvi.ui.effect.EffectScreen
 import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavHostController
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Black
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Black50
@@ -93,16 +95,23 @@ fun UgcDetailScreen(
     val currentPage = pageDatas?.indexOfFirst { it.id == id } ?: 0
     val pagerState = rememberPagerState(initialPage = currentPage.coerceAtLeast(0))
     SystemUiScaffold(statusBarsPadding = false, isDarkFont = false) {
-        VerticalPager(
-            pageCount = pageDatas?.size ?: 0,
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Black)
-                .statusBarsPadding(),
-            state = pagerState,
-        ) {
-            val item = pageDatas?.getOrNull(it) ?: return@VerticalPager
-            UgcDetailItem(viewModel = viewModel, item = item, position = it, isFocused = it == pagerState.currentPage)
+        EffectScreen(onRefresh = { viewModel.dispatchIntent(DefaultAction.Refresh) }) {
+            VerticalPager(
+                pageCount = pageDatas?.size ?: 0,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = Black)
+                    .statusBarsPadding(),
+                state = pagerState,
+            ) {
+                val item = pageDatas?.getOrNull(it) ?: return@VerticalPager
+                UgcDetailItem(
+                    viewModel = viewModel,
+                    item = item,
+                    position = it,
+                    isFocused = it == pagerState.currentPage
+                )
+            }
         }
     }
     DisposableLifecycleEffect(

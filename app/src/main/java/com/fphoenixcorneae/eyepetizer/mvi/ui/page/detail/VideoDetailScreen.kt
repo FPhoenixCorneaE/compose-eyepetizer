@@ -69,6 +69,7 @@ import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.fphoenixcorneae.common.ext.getActivity
 import com.fphoenixcorneae.common.ext.view.gone
+import com.fphoenixcorneae.compose.mvi.DefaultAction
 import com.fphoenixcorneae.eyepetizer.R
 import com.fphoenixcorneae.eyepetizer.const.Constant
 import com.fphoenixcorneae.eyepetizer.ext.DisposableLifecycleEffect
@@ -99,7 +100,6 @@ import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.SystemUiScaffold
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.TypewriterText
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.VideoDetailVideoPlayer
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.lazyColumnFooter
-import com.fphoenixcorneae.eyepetizer.mvi.viewmodel.VideoDetailAction
 import com.fphoenixcorneae.eyepetizer.mvi.viewmodel.VideoDetailViewModel
 import com.fphoenixcorneae.eyepetizer.mvi.viewmodel.VideoDetailViewModelFactory
 import com.shuyu.gsyvideoplayer.GSYVideoManager
@@ -141,7 +141,8 @@ fun VideoDetailScreen(
     LaunchedEffect(key1 = videoId) {
         // singleTop模式，需要手动刷新Ui
         viewModel.updateVideoId(videoId)
-        viewModel.dispatchIntent(VideoDetailAction.Initial)
+        viewModel.dispatchIntent(DefaultAction.Initialize)
+        relatedAndCommentsLazyListState.animateScrollToItem(0, 0)
     }
     LaunchedEffect(key1 = videoDetailUiState.videoDetailReply?.playUrl, key2 = videoPlayer) {
         // 播放地址和播放器同时不为null

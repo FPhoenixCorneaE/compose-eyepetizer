@@ -72,7 +72,7 @@ abstract class BaseViewModel<A> : ViewModel(), IAction<A>, IResult {
         }
     }
 
-    private inline fun <reified T> showContent(message: T?) {
+    fun <T> showContent(message: T?) {
         launch { effectChannel.send(UiEffect.ShowContent(message)) }
     }
 

@@ -1,6 +1,8 @@
 package com.fphoenixcorneae.eyepetizer.mvi.ui.page.mine
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -35,6 +38,7 @@ import com.fphoenixcorneae.eyepetizer.ext.clickableNoRipple
 import com.fphoenixcorneae.eyepetizer.ext.overScrollVertical
 import com.fphoenixcorneae.eyepetizer.ext.rememberOverscrollFlingBehavior
 import com.fphoenixcorneae.eyepetizer.mvi.ui.nav.NavHostController
+import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.Gray
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.GrayDark
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.LocalThemeColors
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.SystemUiScaffold
@@ -74,11 +78,13 @@ fun MineScreen() {
             ) {
                 // 头像
                 Image(
-                    painter = painterResource(id = R.drawable.ic_avatar_gray_76dp),
+                    painter = painterResource(id = R.drawable.ic_logo_gray_76dp),
                     contentDescription = null,
                     modifier = Modifier
                         .align(alignment = Alignment.CenterHorizontally)
-                        .size(size = 76.dp),
+                        .size(size = 76.dp)
+                        .border(width = 1.dp, color = GrayDark, shape = CircleShape)
+                        .background(color = Gray, shape = CircleShape),
                 )
                 // 登录提示
                 Text(
@@ -104,6 +110,9 @@ fun MineScreen() {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
+                    modifier = Modifier.clickableNoRipple {
+                        NavHostController.navToLogin()
+                    },
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_favorite_border_white_20dp),
@@ -124,6 +133,9 @@ fun MineScreen() {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
+                    modifier = Modifier.clickableNoRipple {
+                        NavHostController.navToLogin()
+                    },
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_cache_white_20dp),
@@ -151,22 +163,34 @@ fun MineScreen() {
                 flingBehavior = rememberOverscrollFlingBehavior { lazyListState },
             ) {
                 item {
-                    MineItem(text = stringResource(R.string.my_follow)) {}
+                    MineItem(text = stringResource(R.string.my_follow)) {
+                        NavHostController.navToLogin()
+                    }
                 }
                 item {
-                    MineItem(text = stringResource(R.string.watch_record)) {}
+                    MineItem(text = stringResource(R.string.watch_record)) {
+                        NavHostController.navToLogin()
+                    }
                 }
                 item {
-                    MineItem(text = stringResource(R.string.notification_switch)) {}
+                    MineItem(text = stringResource(R.string.notification_switch)) {
+                        NavHostController.navToLogin()
+                    }
                 }
                 item {
-                    MineItem(text = stringResource(R.string.my_badge)) {}
+                    MineItem(text = stringResource(R.string.my_badge)) {
+                        NavHostController.navToLogin()
+                    }
                 }
                 item {
-                    MineItem(text = stringResource(R.string.feedback)) {}
+                    MineItem(text = stringResource(R.string.feedback)) {
+                        NavHostController.navToWeb(url = Constant.Url.AUTHOR_OPEN)
+                    }
                 }
                 item {
-                    MineItem(text = stringResource(R.string.want_contribute)) {}
+                    MineItem(text = stringResource(R.string.want_contribute)) {
+                        NavHostController.navToWeb(url = Constant.Url.AUTHOR_OPEN)
+                    }
                 }
                 item {
                     Text(
