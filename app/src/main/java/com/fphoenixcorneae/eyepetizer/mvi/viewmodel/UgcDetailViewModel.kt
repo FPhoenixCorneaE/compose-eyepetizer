@@ -3,7 +3,6 @@ package com.fphoenixcorneae.eyepetizer.mvi.viewmodel
 import com.fphoenixcorneae.compose.ext.launch
 import com.fphoenixcorneae.compose.ext.toObject
 import com.fphoenixcorneae.compose.mvi.BaseViewModel
-import com.fphoenixcorneae.compose.mvi.DefaultAction
 import com.fphoenixcorneae.eyepetizer.const.Constant
 import com.fphoenixcorneae.eyepetizer.mvi.model.CommunityReply
 import com.google.gson.reflect.TypeToken
@@ -16,7 +15,7 @@ import kotlinx.coroutines.flow.update
  * @desc：
  * @date：2023/08/29 14:44
  */
-class UgcDetailViewModel : BaseViewModel<DefaultAction>() {
+class UgcDetailViewModel : BaseViewModel<UgcDetailAction>() {
 
     /** 社区推荐列表 */
     val communityCommends by lazy {
@@ -36,7 +35,7 @@ class UgcDetailViewModel : BaseViewModel<DefaultAction>() {
     private val _ugcDetailUiState = MutableStateFlow(UgcDetailUiState())
     val ugcDetailUiState = _ugcDetailUiState.asStateFlow()
 
-    fun toggleBackAndUgcInfoVisibility() {
+    private fun toggleBackAndUgcInfoVisibility() {
         launch {
             _ugcDetailUiState.update {
                 it.copy(visibleBackAndUgcInfo = !it.visibleBackAndUgcInfo)
@@ -44,10 +43,9 @@ class UgcDetailViewModel : BaseViewModel<DefaultAction>() {
         }
     }
 
-    override fun processIntent(action: DefaultAction) {
+    override fun processIntent(action: UgcDetailAction) {
         when (action) {
-            DefaultAction.Initialize -> TODO()
-            DefaultAction.Refresh -> launch {
+            UgcDetailAction.Refresh -> launch {
                 getCommunityCommendsFromLocal().let {
                     if (it.isNullOrEmpty()) {
                         showError(Throwable(message = "数据还没有准备好，请重新尝试！"))
@@ -57,6 +55,8 @@ class UgcDetailViewModel : BaseViewModel<DefaultAction>() {
                     }
                 }
             }
+
+            UgcDetailAction.ToggleBackAndUgcInfoVisibility -> toggleBackAndUgcInfoVisibility()
         }
     }
 }
@@ -68,3 +68,12 @@ class UgcDetailViewModel : BaseViewModel<DefaultAction>() {
 data class UgcDetailUiState(
     val visibleBackAndUgcInfo: Boolean = true,
 )
+
+/**
+ * @desc：
+ * @date：2023/09/06 11:08
+ */
+sealed interface UgcDetailAction {
+    object Refresh : UgcDetailAction
+    object ToggleBackAndUgcInfoVisibility : UgcDetailAction
+}

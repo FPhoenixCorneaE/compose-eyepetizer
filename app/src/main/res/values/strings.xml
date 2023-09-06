@@ -52,4 +52,22 @@
     <string name="search_hot_keys">热搜关键词</string>
     <string name="private_letter">私信</string>
     <string name="photo_gallery_count_format">%1$d/%2$d</string>
+    <string name="daily_update_reminder">- 日报更新提醒 -</string>
+    <string name="setting">设置</string>
+    <string name="open">打开</string>
+    <string name="close">关闭</string>
+    <string name="wifi_follow_auto_play">- Wi-Fi 关注页自动播放 -</string>
+    <string name="translate">- 翻译 -</string>
+    <string name="clear_all_cache">清除所有缓存</string>
+    <string name="option_cache_path">选择缓存路径</string>
+    <string name="option_play_definition">选择播放清晰度</string>
+    <string name="option_cache_definition">选择缓存清晰度</string>
+    <string name="check_version_updates">检查版本更新</string>
+    <string name="user_agreement">用户协议</string>
+    <string name="privacy_policy">隐私政策</string>
+    <string name="video_function_statement">视频功能声明</string>
+    <string name="copyright_report">版权举报</string>
+    <string name="setting_slogan_en">- Your contribution is highly appreciated! -</string>
+    <string name="setting_slogan_zh_CN">让每一个人都开眼，开了又开。</string>
+    <string name="clear_cache_succeed">缓存清除成功</string>
 </resources>

@@ -8,7 +8,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.fphoenixcorneae.compose.ext.launchDefault
 import com.fphoenixcorneae.compose.mvi.BaseViewModel
-import com.fphoenixcorneae.compose.mvi.DefaultAction
 import com.fphoenixcorneae.eyepetizer.https.EyepetizerApi
 import com.fphoenixcorneae.eyepetizer.https.videoService
 import com.fphoenixcorneae.eyepetizer.mvi.model.HomepageReply
@@ -37,49 +36,63 @@ class VideoDetailViewModelFactory(private val videoId: String) : ViewModelProvid
  */
 class VideoDetailViewModel(
     private var videoId: String,
-) : BaseViewModel<DefaultAction>() {
+) : BaseViewModel<VideoDetailAction>() {
 
     /** 评论列表 */
     val videoComments = Pager(config = PagingConfig(pageSize = EyepetizerApi.PAGE_SIZE)) {
-        VideoCommentsPagingSource(videoId = videoId)
+        VideoCommentsPagingSource(viewModel = this)
     }.flow.cachedIn(viewModelScope)
 
-    private val _videoDetailUiState = MutableStateFlow(VideoDetailUiState())
+    private val _videoDetailUiState = MutableStateFlow(VideoDetailUiState(videoId = videoId))
     val videoDetailUiState = _videoDetailUiState.asStateFlow()
 
-    fun updateVideoId(videoId: String) {
-        launchDefault {
-            this.videoId = videoId
+    fun getVideoId() = videoId
+
+    private fun getVideoDetail(videoId: String) {
+        sendHttpRequest(
+            call = {
+                videoService.getVideoDetail(videoId = videoId)
+            },
+        ) { reply ->
             _videoDetailUiState.update {
-                it.copy(videoDetailReply = null, videoRelatedReply = null)
+                it.copy(videoDetailReply = reply)
             }
         }
     }
 
-    override fun processIntent(action: DefaultAction) {
+    private fun getVideoRelated(videoId: String) {
+        sendHttpRequest(
+            call = {
+                videoService.getVideoRelated(videoId = videoId)
+            },
+        ) { reply ->
+            _videoDetailUiState.update {
+                it.copy(videoRelatedReply = reply)
+            }
+        }
+    }
+
+    private fun updateVideoId(videoId: String) {
+        launchDefault {
+            this.videoId = videoId
+            _videoDetailUiState.update {
+                it.copy(videoId = videoId, videoDetailReply = null, videoRelatedReply = null)
+            }
+        }
+    }
+
+    override fun processIntent(action: VideoDetailAction) {
         when (action) {
-            DefaultAction.Initialize -> {
-                sendHttpRequest(
-                    call = {
-                        videoService.getVideoDetail(videoId = videoId)
-                    },
-                ) { reply ->
-                    _videoDetailUiState.update {
-                        it.copy(videoDetailReply = reply)
-                    }
-                }
-                sendHttpRequest(
-                    call = {
-                        videoService.getVideoRelated(videoId = videoId)
-                    },
-                ) { reply ->
-                    _videoDetailUiState.update {
-                        it.copy(videoRelatedReply = reply)
-                    }
-                }
+            VideoDetailAction.Initialize -> {
+                getVideoDetail(videoId = videoId)
+                getVideoRelated(videoId = videoId)
             }
 
-            else -> {}
+            is VideoDetailAction.Refresh -> {
+                updateVideoId(videoId = action.videoId)
+                getVideoDetail(videoId = action.videoId)
+                getVideoRelated(videoId = action.videoId)
+            }
         }
     }
 }
@@ -89,6 +102,16 @@ class VideoDetailViewModel(
  * @date：2023/08/17 17:30
  */
 data class VideoDetailUiState(
+    val videoId: String = "",
     val videoDetailReply: VideoDetailReply? = null,
     val videoRelatedReply: HomepageReply? = null,
 )
+
+/**
+ * @desc：
+ * @date：2023/09/06 11:10
+ */
+sealed interface VideoDetailAction {
+    object Initialize : VideoDetailAction
+    data class Refresh(val videoId: String) : VideoDetailAction
+}

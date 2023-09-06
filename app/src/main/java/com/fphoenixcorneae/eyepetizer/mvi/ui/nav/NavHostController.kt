@@ -41,4 +41,8 @@ object NavHostController {
     fun navToUgcDetail(id: Int) {
         get().navigate(route = "${NavRoute.UGC_DETAIL}?${Constant.Key.ID}=${id}")
     }
+
+    fun navToSetting() {
+        get().navigate(route = NavRoute.SETTING)
+    }
 }

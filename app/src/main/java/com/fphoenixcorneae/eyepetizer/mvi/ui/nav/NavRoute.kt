@@ -12,6 +12,7 @@ object NavRoute {
     const val WEB = "web"
     const val SEARCH = "search"
     const val UGC_DETAIL = "ugc_detail"
+    const val SETTING = "setting"
 
     /**
      * @desc：主页

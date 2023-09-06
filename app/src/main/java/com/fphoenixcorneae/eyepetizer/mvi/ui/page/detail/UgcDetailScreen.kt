@@ -58,7 +58,6 @@ import coil.compose.AsyncImage
 import coil.load
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
-import com.fphoenixcorneae.compose.mvi.DefaultAction
 import com.fphoenixcorneae.eyepetizer.R
 import com.fphoenixcorneae.eyepetizer.const.Constant
 import com.fphoenixcorneae.eyepetizer.ext.DisposableLifecycleEffect
@@ -75,6 +74,7 @@ import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.White
 import com.fphoenixcorneae.eyepetizer.mvi.ui.theme.White60
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.SystemUiScaffold
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.UgcDetailVideoPlayer
+import com.fphoenixcorneae.eyepetizer.mvi.viewmodel.UgcDetailAction
 import com.fphoenixcorneae.eyepetizer.mvi.viewmodel.UgcDetailViewModel
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack
@@ -95,7 +95,11 @@ fun UgcDetailScreen(
     val currentPage = pageDatas?.indexOfFirst { it.id == id } ?: 0
     val pagerState = rememberPagerState(initialPage = currentPage.coerceAtLeast(0))
     SystemUiScaffold(statusBarsPadding = false, isDarkFont = false) {
-        EffectScreen(onRefresh = { viewModel.dispatchIntent(DefaultAction.Refresh) }) {
+        EffectScreen(
+            onRefresh = {
+                viewModel.dispatchIntent(UgcDetailAction.Refresh)
+            },
+        ) {
             VerticalPager(
                 pageCount = pageDatas?.size ?: 0,
                 modifier = Modifier
@@ -164,14 +168,14 @@ fun UgcDetailItem(
         position = position,
         isFocused = isFocused,
     ) {
-        viewModel.toggleBackAndUgcInfoVisibility()
+        viewModel.dispatchIntent(UgcDetailAction.ToggleBackAndUgcInfoVisibility)
     }
     // 图片画廊
     UgcDetailPhotos(
         item = item,
         pagerState = pagerState,
     ) {
-        viewModel.toggleBackAndUgcInfoVisibility()
+        viewModel.dispatchIntent(UgcDetailAction.ToggleBackAndUgcInfoVisibility)
     }
     UgcDetailCover(
         item = item,

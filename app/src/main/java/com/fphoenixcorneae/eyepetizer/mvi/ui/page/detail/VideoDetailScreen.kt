@@ -69,7 +69,6 @@ import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.fphoenixcorneae.common.ext.getActivity
 import com.fphoenixcorneae.common.ext.view.gone
-import com.fphoenixcorneae.compose.mvi.DefaultAction
 import com.fphoenixcorneae.eyepetizer.R
 import com.fphoenixcorneae.eyepetizer.const.Constant
 import com.fphoenixcorneae.eyepetizer.ext.DisposableLifecycleEffect
@@ -100,6 +99,7 @@ import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.SystemUiScaffold
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.TypewriterText
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.VideoDetailVideoPlayer
 import com.fphoenixcorneae.eyepetizer.mvi.ui.widget.lazyColumnFooter
+import com.fphoenixcorneae.eyepetizer.mvi.viewmodel.VideoDetailAction
 import com.fphoenixcorneae.eyepetizer.mvi.viewmodel.VideoDetailViewModel
 import com.fphoenixcorneae.eyepetizer.mvi.viewmodel.VideoDetailViewModelFactory
 import com.shuyu.gsyvideoplayer.GSYVideoManager
@@ -139,10 +139,14 @@ fun VideoDetailScreen(
     var visibleShare by remember { mutableStateOf(false) }
     val relatedAndCommentsLazyListState = rememberLazyListState()
     LaunchedEffect(key1 = videoId) {
-        // singleTop模式，需要手动刷新Ui
-        viewModel.updateVideoId(videoId)
-        viewModel.dispatchIntent(DefaultAction.Initialize)
-        relatedAndCommentsLazyListState.animateScrollToItem(0, 0)
+        if (videoId != videoDetailUiState.videoId) {
+            // singleTop模式，需要手动刷新Ui
+            videoComments.refresh()
+            viewModel.dispatchIntent(VideoDetailAction.Refresh(videoId = videoId))
+            relatedAndCommentsLazyListState.animateScrollToItem(0, 0)
+        } else {
+            viewModel.dispatchIntent(VideoDetailAction.Initialize)
+        }
     }
     LaunchedEffect(key1 = videoDetailUiState.videoDetailReply?.playUrl, key2 = videoPlayer) {
         // 播放地址和播放器同时不为null
@@ -1168,7 +1172,7 @@ fun BottomCommentUi(
             .fillMaxWidth()
             .height(60.dp)
             .background(color = Black45)
-            .zIndex(zIndex = 1f),
+            .zIndex(zIndex = 0.2f),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(space = 12.dp),
     ) {

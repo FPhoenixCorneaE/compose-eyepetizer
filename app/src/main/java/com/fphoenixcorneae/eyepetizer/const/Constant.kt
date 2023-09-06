@@ -65,4 +65,14 @@ object Constant {
         const val USER_SERVICE_AGREEMENT = "http://www.eyepetizer.net/agreement.html"
         const val VIDEO_FUNCTION_STATEMENT = "http://www.eyepetizer.net/right.html"
     }
+
+    /**
+     * @desc：设置选项
+     * @date：2023/09/06 10:40
+     */
+    object SettingOption {
+        const val DAILY_UPDATE_REMINDER = "daily_update_reminder"
+        const val WIFI_FOLLOW_AUTO_PLAY = "wifi_follow_auto_play"
+        const val TRANSLATE = "translate"
+    }
 }

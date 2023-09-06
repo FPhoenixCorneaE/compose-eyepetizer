@@ -88,7 +88,7 @@ fun CommendScreen() {
     val coroutineScope = rememberCoroutineScope()
     val viewModel = viewModel<CommunityViewModel>()
     val communityCommends = viewModel.communityCommends.collectAsLazyPagingItems()
-    LaunchedEffect(key1 = communityCommends) {
+    LaunchedEffect(key1 = communityCommends.itemSnapshotList.items) {
         coroutineScope.launch(Dispatchers.IO) {
             MMKV.defaultMMKV()
                 .encode(Constant.Key.COMMUNITY_COMMEND_LIST, communityCommends.itemSnapshotList.items.toJson())

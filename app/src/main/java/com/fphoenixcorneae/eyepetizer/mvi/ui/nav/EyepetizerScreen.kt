@@ -15,6 +15,7 @@ import com.fphoenixcorneae.eyepetizer.mvi.ui.page.detail.UgcDetailScreen
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.detail.VideoDetailScreen
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.login.LoginScreen
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.search.SearchScreen
+import com.fphoenixcorneae.eyepetizer.mvi.ui.page.setting.SettingScreen
 import com.fphoenixcorneae.eyepetizer.mvi.ui.page.web.WebScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -107,6 +108,15 @@ fun EyepetizerScreen() {
             UgcDetailScreen(
                 id = backStackEntry.arguments?.getInt(Constant.Key.ID) ?: 0,
             )
+        }
+        composable(
+            route = NavRoute.SETTING,
+            enterTransition = { slideInVertically(initialOffsetY = { (it * 0.2f).roundToInt() }) + fadeIn() },
+            exitTransition = { slideOutVertically(targetOffsetY = { (it * 0.2f).roundToInt() }) + fadeOut() },
+            popEnterTransition = { slideInVertically(initialOffsetY = { (it * 0.2f).roundToInt() }) + fadeIn() },
+            popExitTransition = { slideOutVertically(targetOffsetY = { (it * 0.2f).roundToInt() }) + fadeOut() },
+        ) {
+            SettingScreen()
         }
     }
 }
