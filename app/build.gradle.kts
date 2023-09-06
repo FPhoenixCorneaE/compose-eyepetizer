@@ -28,13 +28,29 @@ android {
             abiFilters.addAll(listOf("armeabi-v7a"))
         }
     }
+    signingConfigs {
+        create("release") {
+            storeFile = file("../eyepetizer.jks")
+            storePassword = "eyepetizer"
+            keyAlias = "eyepetizer"
+            keyPassword = "eyepetizer"
+        }
+        getByName("debug") {
+            storeFile = file("../eyepetizer.jks")
+            storePassword = "eyepetizer"
+            keyAlias = "eyepetizer"
+            keyPassword = "eyepetizer"
+        }
+    }
     buildTypes {
         getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         getByName("debug") {
+            signingConfig = signingConfigs.getByName("debug")
             isDebuggable = true
             isMinifyEnabled = true
             isShrinkResources = true
