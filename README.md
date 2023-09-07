@@ -45,7 +45,19 @@
 * [ ] 分享精彩视频与新鲜资讯。
 
 ## 更新日志
-[查看发布历史更新日志][23]
+[历史发布更新日志][23]
+
+## 鼓励
+如果你感觉本项目的源代码对你的学习有所帮助，可以点右上角 **"Star"** 支持一下，谢谢！^_^
+
+## 致谢
+- [Accompanist][24] Utils for Jetpack Compose
+- [Coil][16] 图片加载
+- [Coroutines][15] 协程
+- [Gson][25] Gson 解析
+- [GSYVideoPlayer][26] 视频播放器
+- [PermissionX][27] 动态请求权限
+- [Retrofit2][14] 网络请求框架
 
 ## License
 
@@ -98,3 +110,11 @@ limitations under the License.
 [22]:https://github.com/FPhoenixCorneaE/compose-eyepetizer/blob/main/eyepetizer.apk
 
 [23]:https://github.com/FPhoenixCorneaE/compose-eyepetizer/releases
+
+[24]:https://google.github.io/accompanist/
+
+[25]:https://github.com/google/gson
+
+[26]:https://github.com/CarGuo/GSYVideoPlayer
+
+[27]:https://github.com/guolindev/PermissionX
