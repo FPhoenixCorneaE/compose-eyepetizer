@@ -95,4 +95,6 @@ limitations under the License.
 
 [21]:https://www.wandoujia.com/apps/6619883/history_y2023
 
+[22]:https://github.com/FPhoenixCorneaE/compose-eyepetizer/blob/main/eyepetizer.apk
+
 [23]:https://github.com/FPhoenixCorneaE/compose-eyepetizer/releases
