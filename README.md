@@ -5,8 +5,8 @@
 [![License](https://img.shields.io/badge/License-Apache%20License%202.0-1d7fbf.svg?style=flat)][3]
 
 基于 [Kotlin][11] 语言，采用 [Jetpack][12] [Compose][13] + [Retrofit2][14] + [协程][15] + [Coil][16] 实现的 [MVI][17] 架构，
-高仿「[开眼 Eyepetizer][17]」的一个 Android 客户端项目。 此项目开发规范参考了 [Kotlin 官方文档][19]
-与第三方 [AndroidStandardDevelop][20]。
+高仿「[开眼 Eyepetizer][18]」的一个 Android 客户端项目。 此项目开发规范参考了 [Kotlin 官方文档][19]
+与 [AndroidStandardDevelop][20]。
 通过此项目，新手可以快速入门 Kotlin 语言，掌握 MVI 架构，更好地熟悉 Jetpack 组件以及 Compose 的使用。
 
 这款 App 的 UI 对应的是「开眼 Eyepetizer」的 v6.3.1 版本。（[查看历史版本][21]）
@@ -30,6 +30,22 @@
 <img src="screenshots/homepage_commend.webp" width="50%"/>
 <img src="screenshots/homepage_daily.webp" width="50%"/>
 <img src="screenshots/video_detail.webp" width="50%"/>
+
+## Apk 下载体验
+- [点击下载 eyepetizer.apk][22]
+
+## 主要功能
+* [x] 首页发现精选榜单与专题内容，推荐精选视频日报、新鲜资讯。
+* [x] 社区精彩瞬间图文与视频有机生态展示。
+* [x] 观看优质高清短视频与评论。
+* [x] 推送内容通知列表。
+* [x] 热搜关键词。
+* [ ] 用户、作者账号登录/注册。
+* [ ] 搜索视频、作者、用户及标签。
+* [ ] 分享精彩视频与新鲜资讯。
+
+## 更新日志
+[查看发布历史更新日志][23]
 
 ## License
 
@@ -78,3 +94,5 @@ limitations under the License.
 [20]:https://github.com/Blankj/AndroidStandardDevelop
 
 [21]:https://www.wandoujia.com/apps/6619883/history_y2023
+
+[23]:https://github.com/FPhoenixCorneaE/compose-eyepetizer/releases
