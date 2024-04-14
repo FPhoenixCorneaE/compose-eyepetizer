@@ -543,6 +543,7 @@ private fun SpecialSquareCardCollection(
                             data = HomepageReply.Item.Data.Item.Data(
                                 title = "#广告",
                                 dataType = "SquareCard",
+                                image = "http://img.kaiyanapp.com/57472e13fd2b6c9655c8a600597daf4d.png?imageMogr2/quality/60/format/jpg",
                             ),
                             type = "squareCardOfCategory",
                         )
@@ -611,24 +612,22 @@ private fun SpecialSquareCardCollection(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            val categoryList =
-                item.data?.itemList?.filter { it.type == "squareCardOfCategory" && it.data?.dataType == "SquareCard" }
-                    .orEmpty()
+            val categoryList = item.data?.itemList?.filter {
+                it.type == "squareCardOfCategory" && it.data?.dataType == "SquareCard"
+            }.orEmpty()
             items(items = categoryList) { category ->
                 Box(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.size(108.dp),
                     contentAlignment = Alignment.Center,
                 ) {
                     AsyncImage(
                         model = ImageRequest.Builder(context)
-                            .data(data = category.data?.image)
+                            .data(data = category.data?.image?.run { subSequence(0, indexOf("?")) })
                             .transformations(RoundedCornersTransformation(LocalDensity.current.run { 4.dp.toPx() }))
                             .placeholder(GradientDrawable().apply {
                                 setColor(Gray20.toArgb())
                                 cornerRadius = LocalDensity.current.run { 4.dp.toPx() }
-                            })
-                            .crossfade(true)
-                            .build(),
+                            }).crossfade(true).build(),
                         contentDescription = null,
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.FillBounds,
@@ -749,15 +748,12 @@ private fun ColumnCardList(
                     contentAlignment = Alignment.Center,
                 ) {
                     AsyncImage(
-                        model = ImageRequest.Builder(context)
-                            .data(data = category.data?.image)
+                        model = ImageRequest.Builder(context).data(data = category.data?.image)
                             .transformations(RoundedCornersTransformation(LocalDensity.current.run { 4.dp.toPx() }))
                             .placeholder(GradientDrawable().apply {
                                 setColor(Gray20.toArgb())
                                 cornerRadius = LocalDensity.current.run { 4.dp.toPx() }
-                            })
-                            .crossfade(true)
-                            .build(),
+                            }).crossfade(true).build(),
                         contentDescription = null,
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.FillBounds,
@@ -898,15 +894,11 @@ private fun Banner3(
         }
         // 头像
         AsyncImage(
-            model = ImageRequest.Builder(context)
-                .data(data = item.data?.header?.icon)
-                .transformations(CircleCropTransformation())
-                .placeholder(GradientDrawable().apply {
+            model = ImageRequest.Builder(context).data(data = item.data?.header?.icon)
+                .transformations(CircleCropTransformation()).placeholder(GradientDrawable().apply {
                     shape = GradientDrawable.OVAL
                     setColor(Gray20.toArgb())
-                })
-                .error(R.drawable.ic_avatar_gray_76dp)
-                .crossfade(true).build(),
+                }).error(R.drawable.ic_avatar_gray_76dp).crossfade(true).build(),
             contentDescription = null,
             modifier = Modifier
                 .size(size = 40.dp)
@@ -1104,9 +1096,7 @@ private fun TagBriefCard(
                 .placeholder(GradientDrawable().apply {
                     setColor(Gray20.toArgb())
                     cornerRadius = LocalDensity.current.run { 4.dp.toPx() }
-                })
-                .crossfade(true)
-                .build(),
+                }).crossfade(true).build(),
             contentDescription = null,
             contentScale = ContentScale.FillBounds,
             modifier = Modifier
@@ -1213,9 +1203,7 @@ private fun TopicBriefCard(
                 .placeholder(GradientDrawable().apply {
                     setColor(Gray20.toArgb())
                     cornerRadius = LocalDensity.current.run { 4.dp.toPx() }
-                })
-                .crossfade(true)
-                .build(),
+                }).crossfade(true).build(),
             contentDescription = null,
             contentScale = ContentScale.FillBounds,
             modifier = Modifier
@@ -1379,15 +1367,11 @@ private fun FollowCard(
         }
         // 头像
         AsyncImage(
-            model = ImageRequest.Builder(context)
-                .data(data = item.data?.header?.icon)
-                .transformations(CircleCropTransformation())
-                .placeholder(GradientDrawable().apply {
+            model = ImageRequest.Builder(context).data(data = item.data?.header?.icon)
+                .transformations(CircleCropTransformation()).placeholder(GradientDrawable().apply {
                     shape = GradientDrawable.OVAL
                     setColor(Gray20.toArgb())
-                })
-                .error(R.drawable.ic_avatar_gray_76dp)
-                .crossfade(true).build(),
+                }).error(R.drawable.ic_avatar_gray_76dp).crossfade(true).build(),
             contentDescription = null,
             modifier = Modifier
                 .size(size = 40.dp)
@@ -1499,8 +1483,7 @@ private fun InformationCard(
                     )
                 ).placeholder(GradientDrawable().apply {
                     setColor(Gray20.toArgb())
-                    cornerRadii = floatArrayOf(
-                        LocalDensity.current.run { 4.dp.toPx() },
+                    cornerRadii = floatArrayOf(LocalDensity.current.run { 4.dp.toPx() },
                         LocalDensity.current.run { 4.dp.toPx() },
                         LocalDensity.current.run { 4.dp.toPx() },
                         LocalDensity.current.run { 4.dp.toPx() },
@@ -1979,15 +1962,11 @@ private fun AutoPlayVideoAd(
         }
         // 头像
         AsyncImage(
-            model = ImageRequest.Builder(context)
-                .data(data = item.data?.detail?.icon)
-                .transformations(CircleCropTransformation())
-                .placeholder(GradientDrawable().apply {
+            model = ImageRequest.Builder(context).data(data = item.data?.detail?.icon)
+                .transformations(CircleCropTransformation()).placeholder(GradientDrawable().apply {
                     shape = GradientDrawable.OVAL
                     setColor(Gray20.toArgb())
-                })
-                .error(R.drawable.ic_avatar_gray_76dp)
-                .crossfade(true).build(),
+                }).error(R.drawable.ic_avatar_gray_76dp).crossfade(true).build(),
             contentDescription = null,
             modifier = Modifier
                 .size(size = 40.dp)

@@ -25,7 +25,7 @@ android {
             useSupportLibrary = true
         }
         ndk {
-            abiFilters.addAll(listOf("armeabi-v7a"))
+            abiFilters.addAll(listOf("armeabi-v7a", "x86"))
         }
     }
     signingConfigs {
