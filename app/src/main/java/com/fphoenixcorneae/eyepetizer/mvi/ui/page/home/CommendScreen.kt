@@ -480,7 +480,7 @@ private fun HorizontalScrollCard(
             data = item.data?.itemList,
             imageModel = { item ->
                 ImageRequest.Builder(context)
-                    .data(item?.data?.image?.run { subSequence(0, indexOf("?")) })
+                    .data(item?.data?.image)
                     .transformations(RoundedCornersTransformation(density.run { 4.dp.toPx() }))
                     .placeholder(GradientDrawable().apply {
                         setColor(Gray20.toArgb())
@@ -627,7 +627,7 @@ private fun SpecialSquareCardCollection(
                 ) {
                     AsyncImage(
                         model = ImageRequest.Builder(context)
-                            .data(data = category.data?.image?.run { subSequence(0, indexOf("?")) })
+                            .data(data = category.data?.image)
                             .transformations(RoundedCornersTransformation(LocalDensity.current.run { 4.dp.toPx() }))
                             .placeholder(GradientDrawable().apply {
                                 setColor(Gray20.toArgb())
@@ -754,7 +754,7 @@ private fun ColumnCardList(
                 ) {
                     AsyncImage(
                         model = ImageRequest.Builder(context)
-                            .data(data = category.data?.image?.run { subSequence(0, indexOf("?")) })
+                            .data(data = category.data?.image)
                             .transformations(RoundedCornersTransformation(LocalDensity.current.run { 4.dp.toPx() }))
                             .placeholder(GradientDrawable().apply {
                                 setColor(Gray20.toArgb())
