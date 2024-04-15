@@ -455,12 +455,16 @@ private fun HorizontalScrollCard(
         data = HomepageReply.Item.Data(
             itemList = buildList {
                 repeat(4) {
-                    add(HomepageReply.Item.Data.Item())
+                    add(
+                        HomepageReply.Item.Data.Item(
+                            data = HomepageReply.Item.Data.Item.Data(
+                                title = "mini杂志",
+                                image = "http://img.kaiyanapp.com/5abd51b35e6f0cfb9c00b9b9417c703d.jpeg?imageMogr2/quality/60/format/jpg",
+                            )
+                        )
+                    )
                 }
-            },
-            label = HomepageReply.Item.Data.Item.Data.Label(
-                text = "标签",
-            ),
+            }
         )
     ),
 ) {
@@ -475,7 +479,8 @@ private fun HorizontalScrollCard(
         BannerViewPager(
             data = item.data?.itemList,
             imageModel = { item ->
-                ImageRequest.Builder(context).data(item?.data?.image)
+                ImageRequest.Builder(context)
+                    .data(item?.data?.image?.run { subSequence(0, indexOf("?")) })
                     .transformations(RoundedCornersTransformation(density.run { 4.dp.toPx() }))
                     .placeholder(GradientDrawable().apply {
                         setColor(Gray20.toArgb())
@@ -487,25 +492,25 @@ private fun HorizontalScrollCard(
                 .padding(top = 10.dp, bottom = 12.dp),
             canLoop = false,
         ) {
-            // 标签
+            // 标题
             AnimatedVisibility(
-                visible = !item.data?.label?.text.isNullOrEmpty(),
+                visible = !it?.data?.title.isNullOrEmpty(),
                 enter = fadeIn(animationSpec = snap()),
                 exit = fadeOut(animationSpec = snap()),
                 modifier = Modifier
-                    .align(alignment = Alignment.TopEnd)
+                    .align(alignment = Alignment.TopStart)
                     .padding(all = 8.dp),
             ) {
                 Box(
                     modifier = Modifier
-                        .width(36.dp)
                         .height(20.dp)
                         .border(width = 0.2.dp, color = White80, shape = RoundedCornerShape(2.dp))
-                        .background(color = Black70, shape = RoundedCornerShape(2.dp)),
+                        .background(color = Black70, shape = RoundedCornerShape(2.dp))
+                        .padding(horizontal = 8.dp),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = item.data?.label?.text.orEmpty(),
+                        text = it?.data?.title.orEmpty(),
                         color = White,
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
@@ -748,7 +753,8 @@ private fun ColumnCardList(
                     contentAlignment = Alignment.Center,
                 ) {
                     AsyncImage(
-                        model = ImageRequest.Builder(context).data(data = category.data?.image)
+                        model = ImageRequest.Builder(context)
+                            .data(data = category.data?.image?.run { subSequence(0, indexOf("?")) })
                             .transformations(RoundedCornersTransformation(LocalDensity.current.run { 4.dp.toPx() }))
                             .placeholder(GradientDrawable().apply {
                                 setColor(Gray20.toArgb())
