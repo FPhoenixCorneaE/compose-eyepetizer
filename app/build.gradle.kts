@@ -7,8 +7,7 @@ plugins {
     id("kotlin-parcelize")
 }
 
-@Suppress("UnstableApiUsage")
-android {
+@Suppress("UnstableApiUsage") android {
     namespace = "com.fphoenixcorneae.eyepetizer"
     compileSdk = 34
 
@@ -27,6 +26,8 @@ android {
         ndk {
             abiFilters.addAll(listOf("armeabi-v7a", "x86"))
         }
+
+        flavorDimensions += "eyepetizer"
     }
     signingConfigs {
         create("release") {
@@ -47,14 +48,25 @@ android {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            )
         }
         getByName("debug") {
             signingConfig = signingConfigs.getByName("debug")
             isDebuggable = true
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            // 停用自动图片压缩，以加快构建速度。
+            isCrunchPngs = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            )
+        }
+    }
+    productFlavors {
+        create("dev") {
+            resourceConfigurations += listOf("zh_CN", "xxhdpi")
         }
     }
     compileOptions {
@@ -82,6 +94,13 @@ android {
             excludes.plus("/META-INF/{AL2.0,LGPL2.1}")
         }
     }
+
+    configurations.all {
+        // 动态版本缓存时效
+        resolutionStrategy.cacheDynamicVersionsFor(10, "minutes")
+        // 快照版本缓存时效
+        resolutionStrategy.cacheChangingModulesFor(4, "hours")
+    }
 }
 
 // 输出文件
@@ -89,9 +108,10 @@ android.applicationVariants.all {
     outputs.all {
         // 输出 Apk
         if (this is com.android.build.gradle.internal.api.ApkVariantOutputImpl) {
-            outputFileName = "${project.name}_V${android.defaultConfig.versionName}_${buildType.name}_${
-                SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(Date())
-            }.apk"
+            outputFileName =
+                "${project.name}_V${android.defaultConfig.versionName}_${buildType.name}_${
+                    SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(Date())
+                }.apk"
         }
     }
 }
